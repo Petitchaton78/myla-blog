@@ -1,0 +1,13 @@
+{% comment %}
+  首页和归档共用的一行：日期、标题、示例标记。
+  调用时传入 post 变量，见 index.html 和 archive.html。
+{% endcomment %}
+<li>
+  <time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: "%Y-%m-%d" }}</time>
+  <p class="post-list-title">
+    <a href="{{ include.post.url | relative_url }}">{{ include.post.title }}</a>
+    {% if include.post.sample %}
+      <span class="badge">示例</span>
+    {% endif %}
+  </p>
+</li>

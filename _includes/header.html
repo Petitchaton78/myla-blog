@@ -1,0 +1,19 @@
+{% comment %}
+  顶栏：左边是站名，右边是三个入口。
+  首页把站名做成 h1，其它页面的 h1 留给文章或页面标题，避免一页两个一级标题。
+  站名始终链回首页，文字来自 _config.yml 的 title。
+{% endcomment %}
+<header class="site-header">
+  <div class="wrap header-inner">
+    {% if page.url == "/" %}
+      <h1 class="site-name"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+    {% else %}
+      <p class="site-name"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></p>
+    {% endif %}
+    <nav class="site-nav" aria-label="站内">
+      <a href="{{ '/' | relative_url }}" {% if page.url == "/" %}aria-current="page"{% endif %}>首页</a>
+      <a href="{{ '/archive/' | relative_url }}" {% if page.url == "/archive/" %}aria-current="page"{% endif %}>归档</a>
+      <a href="{{ '/about/' | relative_url }}" {% if page.url == "/about/" %}aria-current="page"{% endif %}>关于</a>
+    </nav>
+  </div>
+</header>

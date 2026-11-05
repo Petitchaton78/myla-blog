@@ -1,0 +1,42 @@
+---
+layout: default
+---
+{% comment %}
+  单篇文章。
+  Jekyll 的 page.previous 是时间上更早的一篇，page.next 是更新的一篇。
+  最新一篇没有 next，最早一篇没有 previous。
+{% endcomment %}
+<article class="post">
+  <header class="page-header">
+    <h1>{{ page.title }}</h1>
+    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y年%-m月%-d日" }}</time>
+  </header>
+
+  {% if page.sample %}
+    <p class="sample-note" role="note">
+      这是一篇占位示例，用来预览版式。开始写自己的文章后，删除
+      <code>_posts</code> 里对应的文件即可。
+    </p>
+  {% endif %}
+
+  <div class="prose">
+    {{ content }}
+  </div>
+
+  {% if page.previous or page.next %}
+    <nav class="pager" aria-label="相邻文章">
+      {% if page.next %}
+        <a href="{{ page.next.url | relative_url }}" rel="next">
+          <span>较新</span>
+          {{ page.next.title }}
+        </a>
+      {% endif %}
+      {% if page.previous %}
+        <a href="{{ page.previous.url | relative_url }}" rel="prev">
+          <span>较早</span>
+          {{ page.previous.title }}
+        </a>
+      {% endif %}
+    </nav>
+  {% endif %}
+</article>
