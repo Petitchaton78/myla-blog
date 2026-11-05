@@ -1,0 +1,8 @@
+{% assign source = include.post.content %}
+{% assign plain = source | strip_html | strip_newlines | remove: " " | remove: "　" %}
+{% assign chars = plain | size %}
+{% assign rate = site.words_per_minute | default: 400 %}
+{% assign minutes = chars | plus: rate | minus: 1 | divided_by: rate %}
+{% if minutes < 1 %}{% assign minutes = 1 %}{% endif %}
+{% assign tenths = chars | times: 10 | divided_by: 1000 %}
+本文总计 {% if chars >= 1000 %}{{ tenths | divided_by: 10 }}.{{ tenths | modulo: 10 }}k{% else %}{{ chars }}{% endif %} 字, 阅读约需要 {{ minutes }} 分钟

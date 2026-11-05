@@ -1,0 +1,21 @@
+---
+layout: default
+title: 标签
+permalink: /tags/
+---
+<article class="markdown">
+  <h1>标签</h1>
+  <p>点进一个标签，就是这个题目下的全部文章。新标签在发布时由 <code>script/generate_pages.rb</code> 登记。</p>
+  {% for item in site.data.taxonomy.tags %}
+    <section class="year-block" id="{{ item.slug }}">
+      <h2><a href="{{ item.url | relative_url }}">{{ item.name }}</a> <span class="archive">{{ item.count }}</span></h2>
+      <ul class="archive-list">
+        {% for post in site.posts %}
+          {% if post.tags contains item.name %}
+            {% include compact-item.html post=post %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+  {% endfor %}
+</article>

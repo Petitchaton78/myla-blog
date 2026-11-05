@@ -1,0 +1,13 @@
+{% comment %}列表里的一篇：日期、分类、标签、可选封面、摘要、字数。{% endcomment %}
+{% assign post = include.post %}
+<article class="book-post">
+  <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+  <h5><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time></h5>
+  {% include term-row.html post=post %}
+  {% if post.image %}
+    <p class="image-cover"><img src="{{ post.image | relative_url }}" alt=""></p>
+  {% endif %}
+  <p>{{ post.excerpt | strip_html | truncate: 180 }}</p>
+  <p><a href="{{ post.url | relative_url }}">阅读全文 -&gt; {% include reading-inline.html post=post %}</a></p>
+  <hr class="post-divider">
+</article>

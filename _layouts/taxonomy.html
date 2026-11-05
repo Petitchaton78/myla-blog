@@ -1,0 +1,31 @@
+---
+layout: default
+---
+{% comment %}
+  标签页和分类页。term / taxonomy 由 script/generate_pages.rb 写进 front matter。
+{% endcomment %}
+<article class="markdown book-index">
+  <h1>
+    {% if page.taxonomy == "category" %}分类{% else %}标签{% endif %}：{{ page.term }}
+  </h1>
+  {% assign shown = 0 %}
+  {% for post in site.posts %}
+    {% assign matched = false %}
+    {% if page.taxonomy == "category" %}
+      {% if post.categories contains page.term %}
+        {% assign matched = true %}
+      {% endif %}
+    {% else %}
+      {% if post.tags contains page.term %}
+        {% assign matched = true %}
+      {% endif %}
+    {% endif %}
+    {% if matched %}
+      {% assign shown = shown | plus: 1 %}
+      {% include post-card.html post=post %}
+    {% endif %}
+  {% endfor %}
+  {% if shown == 0 %}
+    <p>这个{{ page.taxonomy }}下面还没有文章。</p>
+  {% endif %}
+</article>

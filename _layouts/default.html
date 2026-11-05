@@ -3,26 +3,51 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {%- comment -%}
-      浏览器顶栏颜色跟着系统浅色 / 深色走，和页面背景一致。
-    {%- endcomment -%}
-    <meta name="theme-color" content="#f7f6f3" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#161614" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-    {%- comment -%}
-      feed_meta 写入 RSS 的 <link rel="alternate">，阅读器靠它发现订阅源。
-      seo 写入标题、描述、canonical 和 Open Graph。
-    {%- endcomment -%}
-    {% feed_meta %}
+    <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/index.xml' | absolute_url }}">
     {% seo %}
+    {% comment %}
+      在样式生效前先读本地主题，避免深色系统先闪一下白底。
+      没选过时不写 data-theme，交给 prefers-color-scheme。
+    {% endcomment %}
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem("myla-theme");
+          if (theme === "light" || theme === "dark") {
+            document.documentElement.setAttribute("data-theme", theme);
+          }
+        } catch (error) {}
+      })();
+    </script>
   </head>
-  <body>
+  <body class="{% if page.date %}kind-post{% else %}kind-page{% endif %}{% if page.url == '/' %} kind-home{% endif %}">
     <a class="skip" href="#content">跳到正文</a>
-    {% include header.html %}
-    <main id="content" class="wrap">
-      {{ content }}
+    {% comment %}
+      这两个勾选框驱动移动端菜单和目录，不需要 JavaScript。
+      它们必须写在 main 前面，后面的 CSS 才能用 ~ 选中菜单。
+    {% endcomment %}
+    <input type="checkbox" class="hidden toggle" id="menu-control">
+    <input type="checkbox" class="hidden toggle" id="toc-control">
+    <main class="container flex">
+      {% include sidebar.html %}
+      <div class="book-page">
+        {% include header.html %}
+        <div id="content">
+          {{ content }}
+        </div>
+      </div>
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+      <aside class="book-toc" id="book-toc">
+        <div class="book-toc-content">
+          <nav id="TableOfContents" aria-label="目录"></nav>
+        </div>
+      </aside>
     </main>
-    {% include footer.html %}
+    <script type="application/json" id="post-urls">{{ site.posts | map: "url" | jsonify }}</script>
+    <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
   </body>
 </html>

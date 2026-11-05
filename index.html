@@ -1,20 +1,63 @@
 ---
 layout: default
 ---
-{% comment %}
-  首页不写 title。浏览器标题用站点名（_config.yml 的 title），
-  这样改站名时不用再来改这个文件。
-  第一句来自 description。
-{% endcomment %}
-<p class="lede">{{ site.description }}</p>
+<article class="markdown">
+  <h2 id="start">从这里开始</h2>
+  <p>
+    ｜ <a href="{{ '/now/' | relative_url }}">近况</a>
+    ｜ <a href="{{ '/about/' | relative_url }}">关于</a>
+    ｜ <a href="{{ '/friends/' | relative_url }}">友链</a>
+    ｜ <button type="button" class="random" id="random-home">随便看看</button> ｜
+  </p>
 
-{% if site.posts.size == 0 %}
-  <p class="empty">还没有文章。在 <code>_posts</code> 里加一篇，这里就会出现。</p>
-{% else %}
-  <h2 class="section-label">文章</h2>
-  <ol class="post-list">
-    {% for post in site.posts %}
-      {% include post-item.html post=post %}
+  <h2 id="support">支持写作</h2>
+  {% include support.html %}
+
+  <h2 id="stats">写作统计</h2>
+  <div id="heatmap"></div>
+  {% assign total_chars = 0 %}
+  {% for post in site.posts %}
+    {% assign piece = post.content | strip_html | strip_newlines | remove: " " | remove: "　" | size %}
+    {% assign total_chars = total_chars | plus: piece %}
+  {% endfor %}
+  <p class="stats">
+    文章 {{ site.posts.size }} 篇
+    ｜ 大约 {{ total_chars }} 字
+    ｜ <a href="{{ '/2026/05/02/heatmap-note/' | relative_url }}">热力图是怎么画的</a>
+  </p>
+  <script type="application/json" id="heatmap-data">[{% for post in site.posts %}"{{ post.date | date: '%Y-%m-%d' }}"{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
+
+  <h2 id="recent">最近更新 ｜ <a href="{{ '/posts/' | relative_url }}">阅读全部</a></h2>
+  <blockquote class="book-hint warning rss-hint">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <circle cx="6.5" cy="17.5" r="2.2" fill="#7AA874"></circle>
+      <path d="M4 10.5a9 9 0 0 1 9 9" fill="none" stroke="#7AA874" stroke-width="2.2"></path>
+      <path d="M4 5.5a14 14 0 0 1 14 14" fill="none" stroke="#7AA874" stroke-width="2.2"></path>
+    </svg>
+    <span>
+      想跟到新文章的话，用 <a href="{{ '/index.xml' | relative_url }}">RSS</a> 订一份。
+      <a href="{{ '/2026/06/01/what-is-rss/' | relative_url }}">什么是 RSS，以及怎么订</a>
+    </span>
+  </blockquote>
+  <ul class="home-list">
+    {% for post in site.posts limit: 8 %}
+      {% include compact-item.html post=post %}
     {% endfor %}
-  </ol>
-{% endif %}
+  </ul>
+
+  <span class="cloud-label">Categories</span>
+  {% for item in site.data.taxonomy.categories %}
+    <a class="tag-cloud" href="{{ item.url | relative_url }}">{{ item.name }} [{{ item.count }}]</a>
+  {% endfor %}
+
+  <span class="cloud-label">Tags</span>
+  {% for item in site.data.taxonomy.tags %}
+    <a class="tag-cloud" href="{{ item.url | relative_url }}">{{ item.name }} [{{ item.count }}]</a>
+  {% endfor %}
+</article>
+<script>
+  document.getElementById("random-home").addEventListener("click", function () {
+    var button = document.getElementById("random-post");
+    if (button) button.click();
+  });
+</script>

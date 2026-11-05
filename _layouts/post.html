@@ -2,41 +2,39 @@
 layout: default
 ---
 {% comment %}
-  单篇文章。
-  Jekyll 的 page.previous 是时间上更早的一篇，page.next 是更新的一篇。
-  最新一篇没有 next，最早一篇没有 previous。
+  单篇文章。顺序跟参考站的阅读页一致：
+  标题、日期、分类、标签、封面、字数、正文、系列、上下篇、反应、评论。
 {% endcomment %}
-<article class="post">
-  <header class="page-header">
+<article class="markdown post">
+  <header class="post-header">
     <h1>{{ page.title }}</h1>
-    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y年%-m月%-d日" }}</time>
+    <h5 class="post-date">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+    </h5>
+    {% include term-row.html post=page %}
   </header>
 
-  {% if page.sample %}
-    <p class="sample-note" role="note">
-      这是一篇占位示例，用来预览版式。开始写自己的文章后，删除
-      <code>_posts</code> 里对应的文件即可。
+  {% if page.image %}
+    <p class="image-cover">
+      <img src="{{ page.image | relative_url }}" alt="">
     </p>
+    {% if page.image_caption %}
+      <p class="title-image"><i>{{ page.image_caption }}</i></p>
+    {% endif %}
   {% endif %}
 
-  <div class="prose">
-    {{ content }}
-  </div>
+  {% include reading.html source=content %}
 
-  {% if page.previous or page.next %}
-    <nav class="pager" aria-label="相邻文章">
-      {% if page.next %}
-        <a href="{{ page.next.url | relative_url }}" rel="next">
-          <span>较新</span>
-          {{ page.next.title }}
-        </a>
-      {% endif %}
-      {% if page.previous %}
-        <a href="{{ page.previous.url | relative_url }}" rel="prev">
-          <span>较早</span>
-          {{ page.previous.title }}
-        </a>
-      {% endif %}
-    </nav>
+  {% if page.sample %}
+    <blockquote class="book-hint warning">这是占位示例，用来预览版式。写了自己的文章后，删掉 <code>_posts</code> 里对应的文件。</blockquote>
   {% endif %}
+
+  <hr>
+  {{ content }}
+
+  {% include series.html %}
+  {% include post-nav.html %}
+  {% include support.html %}
+  {% include reactions.html %}
 </article>
+{% include comments.html %}

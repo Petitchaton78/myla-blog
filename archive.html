@@ -3,25 +3,17 @@ layout: default
 title: 归档
 permalink: /archive/
 ---
-{% comment %}
-  按年份分组。site.posts 本身是新的在前，所以年份和年内文章都是倒序。
-{% endcomment %}
-<article class="page">
-  <header class="page-header">
-    <h1>归档</h1>
-  </header>
-
+<article class="markdown">
+  <h1>归档</h1>
   {% assign years = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
   {% for year in years %}
-    <section class="year">
+    <section class="year-block">
       <h2>{{ year.name }}</h2>
-      <ol class="post-list">
+      <ul class="archive-list">
         {% for post in year.items %}
-          {% include post-item.html post=post %}
+          {% include compact-item.html post=post %}
         {% endfor %}
-      </ol>
+      </ul>
     </section>
-  {% else %}
-    <p class="empty">还没有文章。</p>
   {% endfor %}
 </article>

@@ -1,22 +1,19 @@
-# 站点配置。改标题、简介、域名时，优先改这里。
-# 改完需要重新构建；GitHub Pages 会在推送到 main 后自动构建。
+# 站点级设置。改站名、简介、评论、分页时先看这里。
+# 改完如果动过标签、分类，或文章多到新的一页，先跑：
+#   ruby script/generate_pages.rb
+# GitHub Actions 会在发布前自动跑这一步。
 
 title: Myla's Blog
-# 首页浏览器标题里跟在站名后面的短句，例如「Myla's Blog | 个人笔记」。
-# 不想要这截后缀时，删掉 tagline 即可；此时标题会改用下面的 description。
 tagline: 个人笔记
-# 首页标题下方的那一句，也会进 RSS 和搜索结果的摘要。
 description: 写给自己看的笔记，也留给偶尔路过的人。
-# 作者名会出现在 RSS 里。换成你自己的名字即可。
 author: Myla
+# 侧栏站名下面的两行。换成你自己的句子，不要留空数组。
+taglines:
+  - 写下来，以后还能看懂
+  - 一页一页，慢慢来
 
-# 正式站点地址。RSS 和 canonical 链接靠它拼绝对地址。
-# 本地预览时 Jekyll 仍用 localhost，不受这个值影响。
 url: https://blog.myla.monster
 baseurl: ""
-
-# 页面语言。html 标签写死为 zh-CN（见 _layouts/default.html）。
-# 这里用下划线，是因为 Open Graph 的 og:locale 要求 zh_CN 这种写法。
 lang: zh_CN
 timezone: Asia/Shanghai
 
@@ -25,20 +22,35 @@ highlighter: rouge
 kramdown:
   input: GFM
   syntax_highlighter: rouge
+  auto_ids: true
 
-# 文章地址形如 /2026/11/02/title/
-# 页面地址形如 /about/
-permalink: pretty
+# 文章地址用日期，不把分类塞进路径，避免中文分类把链接拉得很长。
+permalink: /:year/:month/:day/:title/
 
 plugins:
-  - jekyll-feed
   - jekyll-seo-tag
 
-# RSS 输出到网站根目录的 /feed.xml
-feed:
-  path: feed.xml
+# /posts/ 每页几篇。改这个数之后要重新跑 script/generate_pages.rb。
+list_per_page: 4
 
-# 这些文件只给人看或只给本地构建用，不要进发布结果。
+# 阅读时间按汉字估算，和常见中文博客一样大约 400 字一分钟。
+words_per_minute: 400
+
+# 评论用 giscus（GitHub Discussions）。四个空值填完才会出现评论框。
+# 安装说明写在 README。
+giscus:
+  repo: ""
+  repo_id: ""
+  category: Announcements
+  category_id: ""
+  mapping: pathname
+  lang: zh-CN
+
+# 文末和首页的支持链接。留空数组时，页面上只显示一段占位说明。
+# - title: 请我喝一杯
+#   url: https://example.com/tip
+support_links: []
+
 exclude:
   - README.md
   - Gemfile
@@ -46,6 +58,8 @@ exclude:
   - vendor
   - .bundle
   - .gitignore
+  - script
+  - .github
 
 defaults:
   - scope:
@@ -53,3 +67,4 @@ defaults:
       type: posts
     values:
       layout: post
+      sample: false

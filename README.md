@@ -2,81 +2,95 @@
 
 个人博客，地址是 [https://blog.myla.monster](https://blog.myla.monster)。
 
-静态站，用 **Jekyll** 生成。文章是 Markdown，推送到 `main` 后由 **GitHub Pages 从分支构建**，不需要在自己的电脑上先生成网页。
+静态站，用 **Jekyll** 生成。版式是侧栏加正文的阅读页：标签、分类、归档、站内搜索、目录、字数、系列、上下篇、友链、近况，以及一份 RSS。
 
-## 发布设置
+仓库根目录的 `CNAME` 必须保持为 `blog.myla.monster`。
 
-仓库的 **Settings → Pages**：
+## 发布
 
-- **Source** 选 **Deploy from a branch**（不是 GitHub Actions）
-- **Branch** 选 `main`，文件夹选 `/ (root)`
+用 **GitHub Actions** 发布，不要用「从分支部署」。
 
-自定义域名用仓库根目录的 `CNAME`，内容是一行 `blog.myla.monster`。DNS 已经把 `blog` CNAME 到 `petitchaton78.github.io`，这里不用再改解析。
+仓库 **Settings → Pages → Build and deployment → Source** 选 **GitHub Actions**。
 
-## 改站名和简介
+推到 `main` 后，工作流会先跑 `ruby script/generate_pages.rb`，再 `jekyll build`，然后用 `actions/deploy-pages` 发布。标签页、分类页和 `/posts/` 的第 2 页起都是这一步生成的。GitHub Pages 自带的插件名单里没有能按标签自动建页的插件，所以这一步放在 Actions 里。
+
+只想在本地看结果：
+
+```bash
+bundle install
+ruby script/generate_pages.rb
+bundle exec jekyll serve
+```
+
+## 改站名
 
 编辑 `_config.yml`：
 
-- `title`：顶栏站名，也是浏览器标题。现在的占位是 `Myla's Blog`。
+- `title`：侧栏和浏览器标题。现在是 `Myla's Blog`。
 - `tagline`：首页标签页标题里跟在站名后面的短句。
-- `description`：首页那一句简介，也会写进 RSS 和搜索结果摘要。
+- `description`：RSS 和搜索结果里的简介。
+- `taglines`：侧栏站名下面的两行。
 - `author`：RSS 里的作者名。
 
-## 写一篇新文章
+## 写一篇文章
 
-在 `_posts/` 里新建文件。文件名必须是：
-
-```text
-YYYY-MM-DD-短英文名.md
-```
-
-例如 `_posts/2026-11-05-first-note.md`。日期用写这篇的当天或过去的某一天，**不要写未来的日期**。Jekyll 默认不发布未来的文章，那种文件会从首页、归档和 RSS 里消失。
-
-文件内容：
+在 `_posts/` 新建 `YYYY-MM-DD-短英文名.md`。日期不要写未来，否则不会出现。
 
 ```markdown
 ---
 layout: post
 title: 文章标题
 date: 2026-11-05 10:00:00 +0800
+categories: [日常]
+tags: [笔记]
 description: 一句话摘要，可省略。
+image: /assets/covers/window.svg
+image_caption: 图注，可省略。
+series: 某个系列
+series_order: 1
+exclude_rss: false
 ---
 
-正文从这里开始，用 Markdown 写。
+正文。用 <!-- more --> 把列表摘要截断。
 ```
 
-`layout: post` 可以省，`_config.yml` 里已经给所有文章指定了这个布局。留着也无妨，看着更明白。
+- `categories` 和 `tags` 可以写多个。新名字在下次构建时自动有自己的页面。
+- `series` 相同的文章会在文末互相列出，顺序看 `series_order`。
+- `exclude_rss: true` 的文章留在站上，但不进 [/index.xml](/index.xml)。[/feed.xml](/feed.xml) 是同一份订阅。
+- 封面图放在 `assets/` 里，用站点内的路径。正文里的图片同样写相对路径，宽度会限制在栏内。
+- 给某段加上 `class="spoiler"`，悬停之前会模糊。
 
-写好后提交，推到 `main`。GitHub Pages 构建完就会出现在首页和 [归档](https://blog.myla.monster/archive/)。
+现有带「示例」的文章看完版式后可以删。
 
-不想公开、先留在仓库里时，在开头加上 `published: false`。
+## 其它页面
 
-两篇带「示例」的文章是占位，看完版式后直接删除对应文件。
-
-## 页面
-
-| 路径 | 作用 |
+| 路径 | 改哪里 |
 | --- | --- |
-| `/` | 首页，按时间列出文章 |
-| `/archive/` | 归档，按年份 |
-| `/about/` | 关于，改 `about.md` |
-| `/feed.xml` | RSS |
+| `/` | `index.html` |
+| `/posts/` | 文章列表，每页篇数是 `_config.yml` 的 `list_per_page` |
+| `/archive/` | 按年的短列表 |
+| `/tags/`、`/categories/` | 总览；单个标签和分类的页面由脚本生成 |
+| `/about/` | `about.md` |
+| `/now/` | `now.md` |
+| `/friends/` | `_data/friends.yml` |
+| `/index.xml` | RSS |
 
-## 本地预览
+侧栏链接在 `_data/menu.yml`。
 
-需要 Ruby 3 和 Bundler。
+## 评论
 
-```bash
-bundle install
-bundle exec jekyll serve
-```
+评论用 [giscus](https://giscus.app/)，数据在 GitHub Discussions 里，不需要自己的服务器。
 
-浏览器打开 `http://127.0.0.1:4000`。改文章或样式后会自动刷新。浅色和深色跟着系统的 `prefers-color-scheme`，本地把系统主题切换一下就能看到。
+1. 仓库 **Settings → General → Features** 打开 Discussions。
+2. 打开 [giscus.app](https://giscus.app/)，选这个仓库和讨论分类，复制 `data-repo`、`data-repo-id`、`data-category-id`。
+3. 填进 `_config.yml` 的 `giscus.repo`、`giscus.repo_id`、`giscus.category_id`。
 
-只想确认能构建、不启动服务器：
+三个值都空着时，文章底部只显示一段说明，不会加载评论脚本。
 
-```bash
-bundle exec jekyll build
-```
+文末的表情只记在读者自己的浏览器里，换一台设备不会同步。
 
-生成结果在 `_site/`，这个目录不要提交。
+## 搜索和深色
+
+侧栏的搜索框读取构建出来的 `/search.json`，在浏览器里过滤标题、标签和正文。按 `/` 可以聚焦搜索框。
+
+深色默认跟着系统。侧栏底部的按钮可以固定成浅色或深色。
