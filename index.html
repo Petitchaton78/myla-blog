@@ -1,0 +1,20 @@
+---
+layout: default
+---
+{% comment %}
+  首页不写 title。浏览器标题用站点名（_config.yml 的 title），
+  这样改站名时不用再来改这个文件。
+  第一句来自 description。
+{% endcomment %}
+<p class="lede">{{ site.description }}</p>
+
+{% if site.posts.size == 0 %}
+  <p class="empty">还没有文章。在 <code>_posts</code> 里加一篇，这里就会出现。</p>
+{% else %}
+  <h2 class="section-label">文章</h2>
+  <ol class="post-list">
+    {% for post in site.posts %}
+      {% include post-item.html post=post %}
+    {% endfor %}
+  </ol>
+{% endif %}

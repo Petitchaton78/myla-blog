@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {%- comment -%}
+      浏览器顶栏颜色跟着系统浅色 / 深色走，和页面背景一致。
+    {%- endcomment -%}
+    <meta name="theme-color" content="#f7f6f3" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    {%- comment -%}
+      feed_meta 写入 RSS 的 <link rel="alternate">，阅读器靠它发现订阅源。
+      seo 写入标题、描述、canonical 和 Open Graph。
+    {%- endcomment -%}
+    {% feed_meta %}
+    {% seo %}
+  </head>
+  <body>
+    <a class="skip" href="#content">跳到正文</a>
+    {% include header.html %}
+    <main id="content" class="wrap">
+      {{ content }}
+    </main>
+    {% include footer.html %}
+  </body>
+</html>
