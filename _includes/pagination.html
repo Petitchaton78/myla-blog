@@ -1,0 +1,49 @@
+{% comment %}
+  页码。第 1 页是 /posts/，其后是 /posts/page/N/。
+  这些后续页面由 script/generate_pages.rb 生成。
+{% endcomment %}
+{% assign current = include.current %}
+{% assign page_count = include.page_count %}
+{% if page_count > 1 %}
+  <ul class="pagination pagination-default">
+    <li class="page-item{% if current == 1 %} disabled{% endif %}">
+      {% if current == 1 %}
+        <span class="page-link" aria-disabled="true">««</span>
+      {% else %}
+        <a class="page-link" href="{{ '/posts/' | relative_url }}" aria-label="First">««</a>
+      {% endif %}
+    </li>
+    <li class="page-item{% if current == 1 %} disabled{% endif %}">
+      {% if current == 1 %}
+        <span class="page-link" aria-disabled="true">«</span>
+      {% else %}
+        {% assign prev = current | minus: 1 %}
+        <a class="page-link" href="{% if prev == 1 %}{{ '/posts/' | relative_url }}{% else %}{{ '/posts/page/' | append: prev | append: '/' | relative_url }}{% endif %}" aria-label="Previous">«</a>
+      {% endif %}
+    </li>
+    {% for index in (1..page_count) %}
+      <li class="page-item{% if index == current %} active{% endif %}">
+        {% if index == current %}
+          <span class="page-link" aria-current="page">{{ index }}</span>
+        {% else %}
+          <a class="page-link" href="{% if index == 1 %}{{ '/posts/' | relative_url }}{% else %}{{ '/posts/page/' | append: index | append: '/' | relative_url }}{% endif %}">{{ index }}</a>
+        {% endif %}
+      </li>
+    {% endfor %}
+    <li class="page-item{% if current == page_count %} disabled{% endif %}">
+      {% if current == page_count %}
+        <span class="page-link" aria-disabled="true">»</span>
+      {% else %}
+        {% assign next = current | plus: 1 %}
+        <a class="page-link" href="{{ '/posts/page/' | append: next | append: '/' | relative_url }}" aria-label="Next">»</a>
+      {% endif %}
+    </li>
+    <li class="page-item{% if current == page_count %} disabled{% endif %}">
+      {% if current == page_count %}
+        <span class="page-link" aria-disabled="true">»»</span>
+      {% else %}
+        <a class="page-link" href="{{ '/posts/page/' | append: page_count | append: '/' | relative_url }}" aria-label="Last">»»</a>
+      {% endif %}
+    </li>
+  </ul>
+{% endif %}

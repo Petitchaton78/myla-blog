@@ -1,0 +1,17 @@
+{% comment %}
+  字数去掉标记和空白后按字符计。中文一分钟大约 400 字，可在 _config.yml 改。
+{% endcomment %}
+{% assign source = include.source | default: include.post.content %}
+{% assign plain = source | strip_html | strip_newlines | remove: " " | remove: "　" %}
+{% assign chars = plain | size %}
+{% assign rate = site.words_per_minute | default: 400 %}
+{% assign minutes = chars | plus: rate | minus: 1 | divided_by: rate %}
+{% if minutes < 1 %}{% assign minutes = 1 %}{% endif %}
+{% assign tenths = chars | times: 10 | divided_by: 1000 %}
+{% assign whole = tenths | divided_by: 10 %}
+{% assign frac = tenths | modulo: 10 %}
+<blockquote class="book-hint info">
+  本文总计
+  {% if chars >= 1000 %}{{ whole }}.{{ frac }}k{% else %}{{ chars }}{% endif %}
+  字，阅读约需要 {{ minutes }} 分钟
+</blockquote>

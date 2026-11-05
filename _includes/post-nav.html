@@ -1,0 +1,18 @@
+{% comment %}
+  Jekyll 里 page.previous 是更早的一篇，page.next 是更新的一篇。
+  文案用「前 / 后」，中间是随机一篇。
+{% endcomment %}
+<hr>
+<div class="post-nav">
+  {% if page.previous %}
+    <a href="{{ page.previous.url | relative_url }}">&lt;&lt; 前 | {{ page.previous.title }}</a>
+  {% else %}
+    <span></span>
+  {% endif %}
+  <button type="button" class="random" id="random-post-inline">随便逛逛</button>
+  {% if page.next %}
+    <a href="{{ page.next.url | relative_url }}">{{ page.next.title }} | 后 &gt;&gt;</a>
+  {% else %}
+    <span></span>
+  {% endif %}
+</div>

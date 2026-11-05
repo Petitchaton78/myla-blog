@@ -1,0 +1,12 @@
+{% assign post = include.post %}
+<li>
+  <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+  {% for tag in post.tags %}
+    {% assign href = "/tags/" %}
+    {% for item in site.data.taxonomy.tags %}
+      {% if item.name == tag %}{% assign href = item.url %}{% endif %}
+    {% endfor %}
+    <a class="tag tag-small" href="{{ href | relative_url }}">{{ tag }}</a>
+  {% endfor %}
+  <div class="archive">- {{ post.date | date: "%Y-%m-%d" }}</div>
+</li>

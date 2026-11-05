@@ -1,0 +1,17 @@
+{% if page.series %}
+  {% assign series_posts = site.posts | where: "series", page.series | sort: "series_order" %}
+  {% if series_posts.size > 1 %}
+    <h2>系列：{{ page.series }}</h2>
+    <ul>
+      {% for item in series_posts %}
+        <li>
+          {% if item.url == page.url %}
+            {{ item.title }}
+          {% else %}
+            <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endif %}

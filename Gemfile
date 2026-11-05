@@ -2,16 +2,14 @@
 
 source "https://rubygems.org"
 
-# 本地预览和核对构建用。
-# 线上由 GitHub Pages 用它自带的 Jekyll 构建，不会读取这个 Gemfile。
-# 版本钉在与 GitHub Pages 接近的 3.10，避免本地和线上差一截。
+# 本地和 GitHub Actions 用同一套依赖。
+# 线上如果改成「从分支部署」，GitHub Pages 会忽略这个文件，只用它白名单里的插件。
 gem "jekyll", "~> 3.10.0"
 
 group :jekyll_plugins do
-  gem "jekyll-feed", "~> 0.17"
   gem "jekyll-seo-tag", "~> 2.8"
 end
 
-# Ruby 3 不再自带 webrick，`jekyll serve` 需要单独装。
+# Ruby 3 不再自带 webrick，本地 `jekyll serve` 需要它。
 gem "webrick", "~> 1.8"
 gem "kramdown-parser-gfm", "~> 1.1"

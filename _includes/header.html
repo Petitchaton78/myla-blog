@@ -1,19 +1,17 @@
 {% comment %}
-  顶栏：左边是站名，右边是三个入口。
-  首页把站名做成 h1，其它页面的 h1 留给文章或页面标题，避免一页两个一级标题。
-  站名始终链回首页，文字来自 _config.yml 的 title。
+  窄屏才显示的顶栏。左边打开菜单，右边打开目录（有标题时由脚本显示）。
 {% endcomment %}
-<header class="site-header">
-  <div class="wrap header-inner">
-    {% if page.url == "/" %}
-      <h1 class="site-name"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
-    {% else %}
-      <p class="site-name"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></p>
-    {% endif %}
-    <nav class="site-nav" aria-label="站内">
-      <a href="{{ '/' | relative_url }}" {% if page.url == "/" %}aria-current="page"{% endif %}>首页</a>
-      <a href="{{ '/archive/' | relative_url }}" {% if page.url == "/archive/" %}aria-current="page"{% endif %}>归档</a>
-      <a href="{{ '/about/' | relative_url }}" {% if page.url == "/about/" %}aria-current="page"{% endif %}>关于</a>
-    </nav>
+<header class="book-header">
+  <div class="flex align-center justify-between">
+    <label for="menu-control" aria-label="打开菜单">
+      <svg class="book-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>
+    </label>
+    <strong><a href="{{ '/' | relative_url }}">{{ site.title }}</a></strong>
+    <label for="toc-control" class="toc-toggle" aria-label="打开目录">
+      <svg class="book-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 6h10v2H4V6zm0 5h16v2H4v-2zm0 5h12v2H4v-2z"/></svg>
+    </label>
   </div>
+  <aside class="mobile-toc">
+    <nav id="TableOfContentsMobile" aria-label="目录"></nav>
+  </aside>
 </header>

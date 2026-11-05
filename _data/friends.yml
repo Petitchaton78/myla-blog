@@ -1,0 +1,14 @@
+# 友情链接占位。换成真实博客时改 title、url、note。
+# 这些 example.com 地址是故意的，避免写成别人的站点。
+- title: 示例博客甲
+  url: https://example.com/blog-a
+  note: 占位
+- title: 示例博客乙
+  url: https://example.com/blog-b
+  note: 占位
+- title: 示例博客丙
+  url: https://example.com/blog-c
+  note: 占位
+- title: 示例周刊
+  url: https://example.com/weekly
+  note: 占位

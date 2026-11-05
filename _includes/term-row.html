@@ -1,0 +1,27 @@
+{% comment %}
+  分类单独一行，标签用竖线隔开。地址来自 _data/taxonomy.yml。
+  生成脚本还没跑时，链接退回标签总览或分类总览，避免点进 404。
+{% endcomment %}
+{% assign post = include.post %}
+{% if post.categories.size > 0 %}
+  <div class="term-line">
+    {% for category in post.categories %}
+      {% assign href = "/categories/" %}
+      {% for item in site.data.taxonomy.categories %}
+        {% if item.name == category %}{% assign href = item.url %}{% endif %}
+      {% endfor %}
+      <a href="{{ href | relative_url }}">{{ category }}</a>
+    {% endfor %}
+  </div>
+{% endif %}
+{% if post.tags.size > 0 %}
+  <div class="term-line">
+    {% for tag in post.tags %}
+      {% assign href = "/tags/" %}
+      {% for item in site.data.taxonomy.tags %}
+        {% if item.name == tag %}{% assign href = item.url %}{% endif %}
+      {% endfor %}
+      <a href="{{ href | relative_url }}">{{ tag }}</a>{% unless forloop.last %} <span class="term-sep">|</span> {% endunless %}
+    {% endfor %}
+  </div>
+{% endif %}

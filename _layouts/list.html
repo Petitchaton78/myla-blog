@@ -1,0 +1,32 @@
+---
+layout: default
+---
+{% comment %}
+  /posts/ 和 /posts/page/N/ 共用。
+  list_page 从 1 开始。每页篇数在 _config.yml 的 list_per_page。
+{% endcomment %}
+{% assign per = site.list_per_page | default: 4 %}
+{% assign current = page.list_page | default: 1 %}
+{% assign start = current | minus: 1 | times: per %}
+{% assign slice = site.posts | slice: start, per %}
+{% assign total = site.posts.size %}
+{% assign page_count = total | divided_by: per %}
+{% assign remainder = total | modulo: per %}
+{% if remainder > 0 %}
+  {% assign page_count = page_count | plus: 1 %}
+{% endif %}
+{% if page_count < 1 %}
+  {% assign page_count = 1 %}
+{% endif %}
+
+<article class="markdown book-index">
+  <h1>{{ page.title }}</h1>
+  {% if slice.size == 0 %}
+    <p>这一页还没有文章。</p>
+  {% else %}
+    {% for post in slice %}
+      {% include post-card.html post=post %}
+    {% endfor %}
+  {% endif %}
+  {% include pagination.html current=current page_count=page_count %}
+</article>

@@ -1,0 +1,12 @@
+{% if site.support_links.size > 0 %}
+  <blockquote class="book-hint">
+    如果这篇对你有用，也可以从下面的链接支持后续写作：
+    {% for link in site.support_links %}
+      <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.title }}</a>
+    {% endfor %}
+  </blockquote>
+{% else %}
+  <blockquote class="book-hint">
+    支持链接还是空的。要出现在这里，把地址写进 <code>_config.yml</code> 的 <code>support_links</code>。
+  </blockquote>
+{% endif %}

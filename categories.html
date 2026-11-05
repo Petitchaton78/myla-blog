@@ -1,0 +1,20 @@
+---
+layout: default
+title: 分类
+permalink: /categories/
+---
+<article class="markdown">
+  <h1>分类</h1>
+  {% for item in site.data.taxonomy.categories %}
+    <section class="year-block" id="{{ item.slug }}">
+      <h2><a href="{{ item.url | relative_url }}">{{ item.name }}</a> <span class="archive">{{ item.count }}</span></h2>
+      <ul class="archive-list">
+        {% for post in site.posts %}
+          {% if post.categories contains item.name %}
+            {% include compact-item.html post=post %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+  {% endfor %}
+</article>

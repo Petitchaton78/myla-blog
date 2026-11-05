@@ -1,0 +1,23 @@
+# 侧栏链接。url 要和页面的 permalink 一致，当前页才会高亮。
+# 「笔记」指向标签页，slug 由 script/generate_pages.rb 生成，和标签原文一致。
+- title: 博客
+  en: blog
+  url: /posts/
+- title: 归档
+  en: archive
+  url: /archive/
+- title: 订阅
+  en: rss
+  url: /index.xml
+- title: 笔记
+  en: notes
+  url: /tags/笔记/
+- title: 友链
+  en: friends
+  url: /friends/
+- title: 近况
+  en: now
+  url: /now/
+- title: 关于
+  en: about
+  url: /about/

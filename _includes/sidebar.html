@@ -1,0 +1,51 @@
+{% comment %}
+  左侧固定栏：站名、两行短句、站内搜索、导航、随机一篇、版权。
+  搜索数据在 /search.json，由 assets/js/site.js 在输入时过滤。
+{% endcomment %}
+<aside class="book-menu">
+  <div class="book-menu-content">
+    <nav aria-label="站点">
+      <h2 class="book-brand">
+        <a class="flex align-center" href="{{ '/' | relative_url }}">
+          <img src="{{ '/assets/logo.svg' | relative_url }}" alt="" width="24" height="24">
+          <span>{{ site.title }}</span>
+        </a>
+      </h2>
+      <hr>
+      {% for line in site.taglines %}
+        <p class="tagline">{{ line }}</p>
+      {% endfor %}
+
+      <div class="book-search">
+        <label class="visually-hidden" for="book-search-input">搜索文章</label>
+        <input id="book-search-input" type="search" placeholder="搜索" autocomplete="off" enterkeyhint="search" data-search="{{ '/search.json' | relative_url }}">
+        <div id="book-search-results" role="listbox" aria-label="搜索结果"></div>
+      </div>
+
+      <ul>
+        {% for item in site.data.menu %}
+          {% assign here = false %}
+          {% if page.url == item.url %}{% assign here = true %}{% endif %}
+          {% comment %}列表第 2 页起的地址也算在「博客」上。{% endcomment %}
+          {% if item.url == "/posts/" and page.url contains "/posts/" %}{% assign here = true %}{% endif %}
+          <li>
+            <a href="{{ item.url | relative_url }}" {% if here %}class="active" aria-current="page"{% endif %}>
+              {{ item.title }} | {{ item.en }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <button type="button" class="random" id="random-post">闲逛 | feeling lucky</button>
+
+      <div class="theme-row">
+        <button type="button" id="theme-toggle">切换深色</button>
+      </div>
+
+      <div class="sidebar-legal">
+        © {{ site.time | date: "%Y" }} {{ site.title }}<br>
+        文字先留在这里。转载前问一声就好。
+      </div>
+    </nav>
+  </div>
+</aside>
