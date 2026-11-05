@@ -2,7 +2,7 @@
 
 个人博客，地址是 [https://blog.myla.monster](https://blog.myla.monster)。
 
-静态站，用 **Jekyll** 生成。版式是侧栏加正文的阅读页：标签、分类、归档、站内搜索、目录、字数、系列、上下篇、友链、近况，以及一份 RSS。
+静态站，用 **Jekyll** 生成。版式是深色优先的终端 / 像素风：侧栏、正文、目录。标签、分类、归档、站内搜索、目录、字数、系列、上下篇、友链、近况和 RSS 都还在。长正文用系统黑体，标题才用像素字体。
 
 仓库根目录的 `CNAME` 必须保持为 `blog.myla.monster`。
 
@@ -79,18 +79,24 @@ exclude_rss: false
 
 ## 评论
 
-评论用 [giscus](https://giscus.app/)，数据在 GitHub Discussions 里，不需要自己的服务器。
+评论用 [giscus](https://giscus.app/)，数据在这个仓库的 GitHub Discussions 里。`_config.yml` 的 `giscus` 已经填了仓库、分类和 `pathname` 映射。输入框在评论区底部。
 
-1. 仓库 **Settings → General → Features** 打开 Discussions。
-2. 打开 [giscus.app](https://giscus.app/)，选这个仓库和讨论分类，复制 `data-repo`、`data-repo-id`、`data-category-id`。
-3. 填进 `_config.yml` 的 `giscus.repo`、`giscus.repo_id`、`giscus.category_id`。
+主题不写死。页面按当前的浅色或深色，把 `theme_light` / `theme_dark` 传给 giscus。侧栏切换主题时，评论框会跟着变。
 
-三个值都空着时，文章底部只显示一段说明，不会加载评论脚本。
+仓库需要打开 Discussions，并且存在名为 Announcements 的分类，评论框才能加载。三个 id 有一个空着时，文章底部只显示一段说明。
 
 文末的表情只记在读者自己的浏览器里，换一台设备不会同步。
 
-## 搜索和深色
+## 搜索、主题和快捷键
 
-侧栏的搜索框读取构建出来的 `/search.json`，在浏览器里过滤标题、标签和正文。按 `/` 可以聚焦搜索框。
+侧栏的搜索框读取构建出来的 `/search.json`，在浏览器里过滤标题、标签和正文。
 
-深色默认跟着系统。侧栏底部的按钮可以固定成浅色或深色。
+不在输入框里时：
+
+- `/` 聚焦搜索
+- `R` 随机打开一篇
+- `T` 切换浅色 / 深色
+
+配色默认是深色。系统是浅色、而且没有手动选过时，用浅色。侧栏按钮会把选择记在这台浏览器里。
+
+标题字体放在 `assets/fonts/`：Press Start 2P（拉丁）、Fusion Pixel 12px（简体）、VT323（终端数字和代码）。正文用系统黑体，不走像素字体。授权文本在同目录的 `OFL-*.txt`。

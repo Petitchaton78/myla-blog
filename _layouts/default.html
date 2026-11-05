@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#161614" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f3efe4" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#070b12" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
     <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/index.xml' | absolute_url }}">
@@ -26,6 +26,11 @@
   </head>
   <body class="{% if page.date %}kind-post{% else %}kind-page{% endif %}{% if page.url == '/' %} kind-home{% endif %}">
     <a class="skip" href="#content">跳到正文</a>
+    <div class="crt" aria-hidden="true"></div>
+    <div class="xp-bar" id="reading-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="阅读进度">
+      <span class="xp-name">EXP</span>
+      <span class="xp-track"><span class="xp-fill" id="reading-progress-fill"></span></span>
+    </div>
     {% comment %}
       这两个勾选框驱动移动端菜单和目录，不需要 JavaScript。
       它们必须写在 main 前面，后面的 CSS 才能用 ~ 选中菜单。
