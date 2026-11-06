@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" role="img" aria-label="явў">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" role="img" aria-label="path">
   <rect width="800" height="420" fill="#eef3ea"/>
   <path d="M80 340 C 220 260, 300 300, 400 220 S 620 120, 740 150" fill="none" stroke="#7AA874" stroke-width="16" stroke-linecap="round"/>
   <circle cx="400" cy="220" r="10" fill="#2c6e49"/>

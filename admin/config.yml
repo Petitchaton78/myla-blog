@@ -1,0 +1,117 @@
+# Decap CMS。登录走 Cloudflare Worker，不走 Netlify。
+# base_url 现在是占位。部署 cms-oauth 之后，改成 Worker 的地址，不要带末尾斜杠。
+# 例：https://myla-cms-oauth.<你的子域>.workers.dev
+# 步骤写在 cms-oauth/README.md。
+
+backend:
+  name: github
+  repo: Petitchaton78/myla-blog
+  branch: main
+  # >>> 占位：换成你的 Worker 根地址 <<<
+  base_url: https://REPLACE-WITH-YOUR-WORKER.workers.dev
+  auth_endpoint: /auth
+  site_domain: blog.myla.monster
+  squash_merges: true
+
+locale: zh_Hans
+publish_mode: editorial_workflow
+media_folder: assets/uploads
+public_folder: /assets/uploads
+display_url: https://blog.myla.monster
+
+collections:
+  - name: posts
+    label: 文章
+    label_singular: 文章
+    folder: _posts
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: md
+    format: frontmatter
+    identifier_field: title
+    summary: "{{title}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - label: 版式
+        name: layout
+        widget: hidden
+        default: post
+      - label: 标题
+        name: title
+        widget: string
+      - label: 发布日期
+        name: date
+        widget: datetime
+        date_format: "YYYY-MM-DD"
+        time_format: "HH:mm:ss"
+        format: "YYYY-MM-DD HH:mm:ss ZZ"
+        picker_utc: false
+      - label: 草稿
+        name: draft
+        widget: boolean
+        default: false
+        required: false
+        hint: 打开后这篇文章不会出现在网站上。编辑流程里未发布的稿也还在单独的分支上。
+      - label: 摘要
+        name: description
+        widget: text
+        required: false
+      - label: 分类
+        name: categories
+        widget: list
+        required: false
+      - label: 标签
+        name: tags
+        widget: list
+        required: false
+      - label: 封面
+        name: image
+        widget: image
+        required: false
+        allow_multiple: false
+      - label: 封面说明
+        name: image_caption
+        widget: string
+        required: false
+      - label: 示例
+        name: sample
+        widget: boolean
+        default: false
+        required: false
+      - label: 系列
+        name: series
+        widget: string
+        required: false
+      - label: 系列顺序
+        name: series_order
+        widget: number
+        required: false
+        value_type: int
+      - label: 不进订阅
+        name: exclude_rss
+        widget: boolean
+        default: false
+        required: false
+      - label: 正文
+        name: body
+        widget: markdown
+
+  - name: pages
+    label: 页面
+    files:
+      - label: 关于
+        name: about
+        file: about.md
+        fields:
+          - { label: 版式, name: layout, widget: hidden, default: page }
+          - { label: 标题, name: title, widget: string }
+          - { label: 地址, name: permalink, widget: string, default: "/about/" }
+          - { label: 正文, name: body, widget: markdown }
+      - label: 近况
+        name: now
+        file: now.md
+        fields:
+          - { label: 版式, name: layout, widget: hidden, default: page }
+          - { label: 标题, name: title, widget: string }
+          - { label: 地址, name: permalink, widget: string, default: "/now/" }
+          - { label: 正文, name: body, widget: markdown }

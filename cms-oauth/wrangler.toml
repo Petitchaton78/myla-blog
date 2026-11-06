@@ -1,0 +1,14 @@
+# Cloudflare Worker：给 /admin 做 GitHub OAuth。
+# 部署说明在同目录 README.md。密钥不要写进这个文件。
+
+name = "myla-cms-oauth"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# 要用自己的域名时，去掉下面两行的注释，并把地址换成 Worker 的域名。
+# route = { pattern = "cms-oauth.blog.myla.monster", zone_name = "myla.monster", custom_domain = true }
+# workers_dev = false
+
+[vars]
+# 仓库是公开的，用 public_repo。改成私有库后再设成 "1"。
+GITHUB_REPO_PRIVATE = "0"

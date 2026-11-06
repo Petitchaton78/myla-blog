@@ -12,12 +12,15 @@
 
 仓库 **Settings → Pages → Build and deployment → Source** 选 **GitHub Actions**。
 
-推到 `main` 后，工作流会先跑 `ruby script/generate_pages.rb`，再 `jekyll build`，然后用 `actions/deploy-pages` 发布。标签页、分类页和 `/posts/` 的第 2 页起都是这一步生成的。GitHub Pages 自带的插件名单里没有能按标签自动建页的插件，所以这一步放在 Actions 里。
+推到 `main` 后，工作流会先跑 `ruby script/publish_obsidian.rb` 和 `ruby script/generate_pages.rb`，再 `jekyll build`，然后用 `actions/deploy-pages` 发布。前一步把 Obsidian 笔记转成文章，后一步生成标签页、分类页和 `/posts/` 的第 2 页起。GitHub Pages 自带的插件名单里没有能按标签自动建页的插件，所以这两步放在 Actions 里。
+
+浏览器里改文章走 `/admin`（[Decap CMS](https://decapcms.org/)）。登录要先部署 `cms-oauth/` 里的 Cloudflare Worker，步骤在 [cms-oauth/README.md](cms-oauth/README.md)。从 Obsidian 发笔记看 [docs/obsidian-publish.md](docs/obsidian-publish.md)。
 
 只想在本地看结果：
 
 ```bash
 bundle install
+ruby script/publish_obsidian.rb
 ruby script/generate_pages.rb
 bundle exec jekyll serve
 ```
@@ -55,6 +58,8 @@ exclude_rss: false
 ```
 
 - `categories` 和 `tags` 可以写多个。新名字在下次构建时自动有自己的页面。
+- `draft: true` 的文章留在仓库里，但不会进网站、标签页和分页。
+- 友链正文含有 Liquid，不放进 `/admin`。改友链仍编辑 `_data/friends.yml`。
 - `series` 相同的文章会在文末互相列出，顺序看 `series_order`。
 - `exclude_rss: true` 的文章留在站上，但不进 [/index.xml](/index.xml)。[/feed.xml](/feed.xml) 是同一份订阅。
 - 封面图放在 `assets/` 里，用站点内的路径。正文里的图片同样写相对路径，宽度会限制在栏内。
