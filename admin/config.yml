@@ -1,14 +1,12 @@
 # Decap CMS。登录走 Cloudflare Worker，不走 Netlify。
-# base_url 现在是占位。部署 cms-oauth 之后，改成 Worker 的地址，不要带末尾斜杠。
-# 例：https://myla-cms-oauth.<你的子域>.workers.dev
-# 步骤写在 cms-oauth/README.md。
+# base_url 是 Worker 根地址，不要末尾斜杠。换地址时，GitHub OAuth App 的回调要一起改。
+# 说明在 cms-oauth/README.md。
 
 backend:
   name: github
   repo: Petitchaton78/myla-blog
   branch: main
-  # >>> 占位：换成你的 Worker 根地址 <<<
-  base_url: https://REPLACE-WITH-YOUR-WORKER.workers.dev
+  base_url: https://myla-cms-oauth.hangkaidiyi.workers.dev
   auth_endpoint: /auth
   site_domain: blog.myla.monster
   squash_merges: true
