@@ -1,6 +1,9 @@
 // GitHub OAuth proxy for Decap CMS on GitHub Pages.
 // Protocol matches sterlingwes/decap-proxy (GET /auth, GET /callback, postMessage to the opener).
 // Secret names here are GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET.
+// Scope is chosen in scope.js. The scope query from the browser is ignored.
+
+import { oauthScope } from "./scope.js";
 
 function randomHex(bytes) {
   var buf = new Uint8Array(bytes);
@@ -8,12 +11,6 @@ function randomHex(bytes) {
   return Array.from(buf).map(function (b) {
     return b.toString(16).padStart(2, "0");
   }).join("");
-}
-
-function repoScope(env) {
-  var flag = env.GITHUB_REPO_PRIVATE;
-  if (flag !== undefined && flag !== "0" && flag !== "false") return "repo,user";
-  return "public_repo,user";
 }
 
 function redirectUri(url) {
@@ -25,7 +22,7 @@ function authorizeURL(env, url) {
     response_type: "code",
     client_id: env.GITHUB_CLIENT_ID,
     redirect_uri: redirectUri(url),
-    scope: repoScope(env),
+    scope: oauthScope(env),
     state: randomHex(4)
   });
   return "https://github.com/login/oauth/authorize?" + params.toString();

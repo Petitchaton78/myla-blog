@@ -8,6 +8,9 @@ backend:
   branch: main
   base_url: https://myla-cms-oauth.hangkaidiyi.workers.dev
   auth_endpoint: /auth
+  # 不写时 Decap 会向代理要 repo，那包含私有库。公开博客只要 public_repo。
+  # 线上真正发给 GitHub 的范围以 cms-oauth/scope.js 为准，不用浏览器传来的 scope。
+  auth_scope: public_repo
   site_domain: blog.myla.monster
   squash_merges: true
 
