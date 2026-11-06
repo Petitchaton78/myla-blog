@@ -8,35 +8,25 @@ GitHub Pages 没有地方跑 OAuth 回调。`/admin` 的登录要经过这个 Cl
 
 密钥只放在 Cloudflare，不要写进 `wrangler.toml`，也不要提交。
 
-## 你要做的
+## 现在的地址
 
-1. 在 GitHub 打开 **Settings → Developer settings → OAuth Apps → New OAuth App**。
-   - Homepage URL：`https://blog.myla.monster`
-   - Authorization callback URL 必须一字不差，包括问号后面的部分：
-     `https://<Worker 的主机名>/callback?provider=github`
-   - Worker 还没部署时，主机名还不知道。可以先填一个临时值，部署后回来改成真实地址。GitHub 要求回调和 Worker 实际使用的地址完全相同。
+Worker 已经部署在 `https://myla-cms-oauth.hangkaidiyi.workers.dev`。`admin/config.yml` 的 `backend.base_url` 就是这个根地址，没有末尾斜杠。`auth_endpoint` 是 `/auth`。
 
-2. 部署 Worker。在本目录执行：
+GitHub OAuth App 的 Authorization callback URL 必须一字不差：
 
-   ```bash
-   npx wrangler login
-   npx wrangler secret put GITHUB_CLIENT_ID
-   npx wrangler secret put GITHUB_CLIENT_SECRET
-   npx wrangler deploy
-   ```
+`https://myla-cms-oauth.hangkaidiyi.workers.dev/callback?provider=github`
 
-   `GITHUB_CLIENT_ID` 是 OAuth App 的 Client ID。`GITHUB_CLIENT_SECRET` 是它的 Client secret。`wrangler deploy` 结束时会打印 Worker 地址，形如 `https://myla-cms-oauth.<你的子域>.workers.dev`。
+Homepage URL 是 `https://blog.myla.monster`。密钥 `GITHUB_CLIENT_ID` 和 `GITHUB_CLIENT_SECRET` 只放在 Cloudflare，不进仓库。
 
-3. 把第 1 步的回调改成这个地址加上 `/callback?provider=github`。不要漏掉 `?provider=github`。
+打开 `https://blog.myla.monster/admin`，用 **使用 GitHub 登录**。登录的 GitHub 账号需要对 `Petitchaton78/myla-blog` 有写权限。编辑流程会开 pull request，文章不会直接落到 `main`，直到在 GitHub 上合并。
 
-4. 打开 `admin/config.yml`，把 `backend.base_url` 换成 Worker 的根地址，不要末尾斜杠。现在那里是占位：
+Worker 换了地址时，要同时改 OAuth App 的回调和 `backend.base_url`。重新部署、轮换密钥时，在本目录执行：
 
-   ```yaml
-   base_url: https://REPLACE-WITH-YOUR-WORKER.workers.dev
-   ```
-
-   改完推到 `main`。`auth_endpoint` 保持 `/auth`。
-
-5. 打开 `https://blog.myla.monster/admin`，用 **使用 GitHub 登录**。登录的 GitHub 账号需要对 `Petitchaton78/myla-blog` 有写权限。编辑流程会开 pull request，文章不会直接落到 `main`，直到你在 GitHub 上把它合并。
+```bash
+npx wrangler login
+npx wrangler secret put GITHUB_CLIENT_ID
+npx wrangler secret put GITHUB_CLIENT_SECRET
+npx wrangler deploy
+```
 
 不需要为这个代理另建 GitHub 账号或 Cloudflare 之外的账号。OAuth App 和 Worker 都用你现有的 GitHub 与 Cloudflare 账号。
