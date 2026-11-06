@@ -24,6 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Test OAuth scopes
+        run: node --test cms-oauth/scope.test.js
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
