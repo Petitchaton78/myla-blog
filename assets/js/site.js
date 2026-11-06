@@ -144,7 +144,7 @@
     if (node) node.addEventListener("click", goRandom);
   });
 
-  /* 深色 / 浅色。没点过按钮时跟着系统。页面默认色是深色。 */
+  /* 深色 / 浅色。没点过按钮时跟着系统。样式表的底色是浅色。 */
   var themeButton = document.getElementById("theme-toggle");
   function currentTheme() {
     if (root.getAttribute("data-theme") === "dark") return "dark";
@@ -245,7 +245,7 @@
     }
   }
 
-  /* 文章页顶部的 EXP 条，按正文滚过的比例填充。 */
+  /* 文章页顶部的细进度条，按正文滚过的比例填充。 */
   var progress = document.getElementById("reading-progress");
   var progressFill = document.getElementById("reading-progress-fill");
   if (progress && progressFill && document.body.classList.contains("kind-post")) {

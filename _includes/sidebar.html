@@ -7,7 +7,7 @@
     <nav aria-label="站点">
       <h2 class="book-brand">
         <a class="flex align-center" href="{{ '/' | relative_url }}">
-          <img src="{{ '/assets/logo.svg' | relative_url }}" alt="" width="24" height="24">
+          <img class="pixel-art" src="{{ '/assets/logo.svg' | relative_url }}" alt="" width="32" height="32">
           <span>{{ site.title }}</span>
         </a>
       </h2>
@@ -30,7 +30,6 @@
           {% if item.url == "/posts/" and page.url contains "/posts/" %}{% assign here = true %}{% endif %}
           <li>
             <a class="nav-link{% if here %} active{% endif %}" href="{{ item.url | relative_url }}" {% if here %}aria-current="page"{% endif %}>
-              {% include nav-icon.html name=item.en %}
               <span class="nav-label">{{ item.title }}</span>
               <span class="nav-en">{{ item.en }}</span>
             </a>

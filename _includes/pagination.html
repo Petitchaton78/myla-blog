@@ -8,17 +8,17 @@
   <ul class="pagination pagination-default">
     <li class="page-item{% if current == 1 %} disabled{% endif %}">
       {% if current == 1 %}
-        <span class="page-link" aria-disabled="true">««</span>
+        <span class="page-link" aria-disabled="true">首页</span>
       {% else %}
-        <a class="page-link" href="{{ '/posts/' | relative_url }}" aria-label="First">««</a>
+        <a class="page-link" href="{{ '/posts/' | relative_url }}">首页</a>
       {% endif %}
     </li>
     <li class="page-item{% if current == 1 %} disabled{% endif %}">
       {% if current == 1 %}
-        <span class="page-link" aria-disabled="true">«</span>
+        <span class="page-link" aria-disabled="true">上一页</span>
       {% else %}
         {% assign prev = current | minus: 1 %}
-        <a class="page-link" href="{% if prev == 1 %}{{ '/posts/' | relative_url }}{% else %}{{ '/posts/page/' | append: prev | append: '/' | relative_url }}{% endif %}" aria-label="Previous">«</a>
+        <a class="page-link" href="{% if prev == 1 %}{{ '/posts/' | relative_url }}{% else %}{{ '/posts/page/' | append: prev | append: '/' | relative_url }}{% endif %}">上一页</a>
       {% endif %}
     </li>
     {% for index in (1..page_count) %}
@@ -32,17 +32,17 @@
     {% endfor %}
     <li class="page-item{% if current == page_count %} disabled{% endif %}">
       {% if current == page_count %}
-        <span class="page-link" aria-disabled="true">»</span>
+        <span class="page-link" aria-disabled="true">下一页</span>
       {% else %}
         {% assign next = current | plus: 1 %}
-        <a class="page-link" href="{{ '/posts/page/' | append: next | append: '/' | relative_url }}" aria-label="Next">»</a>
+        <a class="page-link" href="{{ '/posts/page/' | append: next | append: '/' | relative_url }}">下一页</a>
       {% endif %}
     </li>
     <li class="page-item{% if current == page_count %} disabled{% endif %}">
       {% if current == page_count %}
-        <span class="page-link" aria-disabled="true">»»</span>
+        <span class="page-link" aria-disabled="true">末页</span>
       {% else %}
-        <a class="page-link" href="{{ '/posts/page/' | append: page_count | append: '/' | relative_url }}" aria-label="Last">»»</a>
+        <a class="page-link" href="{{ '/posts/page/' | append: page_count | append: '/' | relative_url }}">末页</a>
       {% endif %}
     </li>
   </ul>

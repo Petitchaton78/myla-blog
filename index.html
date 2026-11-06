@@ -20,23 +20,8 @@ layout: default
     {% assign piece = post.content | strip_html | strip_newlines | remove: " " | remove: "　" | size %}
     {% assign total_chars = total_chars | plus: piece %}
   {% endfor %}
-  {% assign hp = site.posts.size | times: 100 | divided_by: 20 %}
-  {% if hp > 100 %}{% assign hp = 100 %}{% endif %}
-  {% assign xp = total_chars | times: 100 | divided_by: 4000 %}
-  {% if xp > 100 %}{% assign xp = 100 %}{% endif %}
-  <div class="hud" aria-label="写作统计">
-    <div class="hud-row">
-      <span class="hud-name">HP</span>
-      <span class="hud-track"><span class="hud-fill" style="width: {{ hp }}%"></span></span>
-      <span class="hud-value">文章 {{ site.posts.size }} 篇</span>
-    </div>
-    <div class="hud-row">
-      <span class="hud-name">XP</span>
-      <span class="hud-track"><span class="hud-fill hud-fill-alt" style="width: {{ xp }}%"></span></span>
-      <span class="hud-value">大约 {{ total_chars }} 字</span>
-    </div>
-  </div>
-  <p class="stats">
+  <p class="quiet-stats">文章 {{ site.posts.size }} 篇，大约 {{ total_chars }} 字。</p>
+  <p>
     <a href="{{ '/2026/05/02/heatmap-note/' | relative_url }}">热力图是怎么画的</a>
   </p>
   <script type="application/json" id="heatmap-data">[{% for post in site.posts %}"{{ post.date | date: '%Y-%m-%d' }}"{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
@@ -60,12 +45,12 @@ layout: default
     {% endfor %}
   </ul>
 
-  <span class="cloud-label">分类</span>
+  <h2 id="categories">分类</h2>
   {% for item in site.data.taxonomy.categories %}
     <a class="tag-cloud" href="{{ item.url | relative_url }}">{{ item.name }} [{{ item.count }}]</a>
   {% endfor %}
 
-  <span class="cloud-label">标签</span>
+  <h2 id="tags">标签</h2>
   {% for item in site.data.taxonomy.tags %}
     <a class="tag-cloud" href="{{ item.url | relative_url }}">{{ item.name }} [{{ item.count }}]</a>
   {% endfor %}
