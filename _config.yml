@@ -4,13 +4,13 @@
 # GitHub Actions 会在发布前自动跑这一步。
 
 title: Myla's Blog
-tagline: 个人笔记
-description: 写给自己看的笔记，也留给偶尔路过的人。
+tagline: 玩家日志
+description: 深圳和香港之间的笔记。金融、游戏、AIGC。
 author: Myla
-# 侧栏站名下面的两行。换成你自己的句子，不要留空数组。
+# 侧栏站名下面的两行。
 taglines:
-  - 写下来，以后还能看懂
-  - 一页一页，慢慢来
+  - 深圳 / 香港，双端存档
+  - 白天对账，夜里下副本
 
 url: https://blog.myla.monster
 baseurl: ""
@@ -36,15 +36,21 @@ list_per_page: 4
 # 阅读时间按汉字估算，和常见中文博客一样大约 400 字一分钟。
 words_per_minute: 400
 
-# 评论用 giscus（GitHub Discussions）。四个空值填完才会出现评论框。
-# 安装说明写在 README。
+# 评论用 giscus（GitHub Discussions）。
+# theme 不写死成一个值：页面按当前浅色/深色把 theme_light 或 theme_dark 传进去。
 giscus:
-  repo: ""
-  repo_id: ""
+  repo: Petitchaton78/myla-blog
+  repo_id: R_kgDOVj_v_A
   category: Announcements
-  category_id: ""
+  category_id: DIC_kwDOVj_v_M4DKe6z
   mapping: pathname
+  strict: "0"
+  reactions: "1"
+  emit_metadata: "0"
+  input_position: bottom
   lang: zh-CN
+  theme_light: light
+  theme_dark: dark
 
 # 文末和首页的支持链接。留空数组时，页面上只显示一段占位说明。
 # - title: 请我喝一杯

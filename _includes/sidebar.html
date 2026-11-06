@@ -29,22 +29,30 @@
           {% comment %}列表第 2 页起的地址也算在「博客」上。{% endcomment %}
           {% if item.url == "/posts/" and page.url contains "/posts/" %}{% assign here = true %}{% endif %}
           <li>
-            <a href="{{ item.url | relative_url }}" {% if here %}class="active" aria-current="page"{% endif %}>
-              {{ item.title }} | {{ item.en }}
+            <a class="nav-link{% if here %} active{% endif %}" href="{{ item.url | relative_url }}" {% if here %}aria-current="page"{% endif %}>
+              {% include nav-icon.html name=item.en %}
+              <span class="nav-label">{{ item.title }}</span>
+              <span class="nav-en">{{ item.en }}</span>
             </a>
           </li>
         {% endfor %}
       </ul>
 
-      <button type="button" class="random" id="random-post">闲逛 | feeling lucky</button>
+      <button type="button" class="random" id="random-post">随机传送</button>
 
       <div class="theme-row">
-        <button type="button" id="theme-toggle">切换深色</button>
+        <button type="button" id="theme-toggle">深色模式</button>
       </div>
+
+      <p class="key-hints">
+        <span><kbd>/</kbd> 搜索</span>
+        <span><kbd>R</kbd> 随机</span>
+        <span><kbd>T</kbd> 主题</span>
+      </p>
 
       <div class="sidebar-legal">
         © {{ site.time | date: "%Y" }} {{ site.title }}<br>
-        文字先留在这里。转载前问一声就好。
+        引用可以，整篇转载先问一声。
       </div>
     </nav>
   </div>

@@ -1,30 +1,28 @@
 {% comment %}
-  giscus 读 GitHub Discussions。repo 和 repo_id 都填了才加载脚本。
+  giscus 的参数都在 _config.yml 的 giscus 里。
+  脚本不写死主题：assets/js/site.js 按当前浅色或深色填 data-theme，
+  切换主题时再发一条 setConfig，让评论框跟着变。
 {% endcomment %}
 <div class="book-comments">
-  <div class="markdown-inner">
-    {% if site.giscus.repo != "" and site.giscus.repo_id != "" and site.giscus.category_id != "" %}
-      <div id="giscus"></div>
-      <script src="https://giscus.app/client.js"
-        data-repo="{{ site.giscus.repo }}"
-        data-repo-id="{{ site.giscus.repo_id }}"
-        data-category="{{ site.giscus.category }}"
-        data-category-id="{{ site.giscus.category_id }}"
-        data-mapping="{{ site.giscus.mapping | default: 'pathname' }}"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="preferred_color_scheme"
-        data-lang="{{ site.giscus.lang | default: 'zh-CN' }}"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async></script>
-    {% else %}
-      <blockquote class="book-hint info" id="giscus-placeholder">
-        评论位已留好，用的是 giscus。在 <code>_config.yml</code> 的 <code>giscus</code> 里填上
-        <code>repo</code>、<code>repo_id</code>、<code>category_id</code> 之后，这里会变成评论框。
-      </blockquote>
-    {% endif %}
-  </div>
+  <p class="comments-kicker"><span>COMMENTS</span>留言</p>
+  {% if site.giscus.repo != blank and site.giscus.repo_id != blank and site.giscus.category_id != blank %}
+    <div id="giscus" class="giscus"
+      data-repo="{{ site.giscus.repo }}"
+      data-repo-id="{{ site.giscus.repo_id }}"
+      data-category="{{ site.giscus.category }}"
+      data-category-id="{{ site.giscus.category_id }}"
+      data-mapping="{{ site.giscus.mapping | default: 'pathname' }}"
+      data-strict="{{ site.giscus.strict | default: '0' }}"
+      data-reactions="{{ site.giscus.reactions | default: '1' }}"
+      data-emit="{{ site.giscus.emit_metadata | default: '0' }}"
+      data-input-position="{{ site.giscus.input_position | default: 'bottom' }}"
+      data-lang="{{ site.giscus.lang | default: 'zh-CN' }}"
+      data-theme-light="{{ site.giscus.theme_light | default: 'light' }}"
+      data-theme-dark="{{ site.giscus.theme_dark | default: 'dark' }}"></div>
+  {% else %}
+    <blockquote class="book-hint info" id="giscus-placeholder">
+      评论位已留好，用的是 giscus。在 <code>_config.yml</code> 的 <code>giscus</code> 里填上
+      <code>repo</code>、<code>repo_id</code>、<code>category_id</code> 之后，这里会变成评论框。
+    </blockquote>
+  {% endif %}
 </div>

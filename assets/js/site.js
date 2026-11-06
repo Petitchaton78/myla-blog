@@ -144,16 +144,29 @@
     if (node) node.addEventListener("click", goRandom);
   });
 
-  /* 深色 / 浅色。没点过按钮时跟着系统。 */
+  /* 深色 / 浅色。没点过按钮时跟着系统。页面默认色是深色。 */
   var themeButton = document.getElementById("theme-toggle");
   function currentTheme() {
     if (root.getAttribute("data-theme") === "dark") return "dark";
     if (root.getAttribute("data-theme") === "light") return "light";
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   }
+  function giscusThemeName() {
+    var host = document.getElementById("giscus");
+    var darkName = (host && host.getAttribute("data-theme-dark")) || "dark";
+    var lightName = (host && host.getAttribute("data-theme-light")) || "light";
+    return currentTheme() === "dark" ? darkName : lightName;
+  }
+  function syncGiscusTheme() {
+    var frame = document.querySelector("iframe.giscus-frame");
+    if (!frame || !frame.contentWindow) return;
+    frame.contentWindow.postMessage({
+      giscus: { setConfig: { theme: giscusThemeName() } }
+    }, "https://giscus.app");
+  }
   function paintThemeButton() {
     if (!themeButton) return;
-    themeButton.textContent = currentTheme() === "dark" ? "切换浅色" : "切换深色";
+    themeButton.textContent = currentTheme() === "dark" ? "浅色模式" : "深色模式";
   }
   paintThemeButton();
   if (themeButton) {
@@ -162,6 +175,7 @@
       root.setAttribute("data-theme", next);
       try { localStorage.setItem("myla-theme", next); } catch (error) {}
       paintThemeButton();
+      syncGiscusTheme();
     });
   }
 
@@ -228,5 +242,62 @@
         heatmap.appendChild(cell);
       }
     }
+  }
+
+  /* 文章页顶部的 EXP 条，按正文滚过的比例填充。 */
+  var progress = document.getElementById("reading-progress");
+  var progressFill = document.getElementById("reading-progress-fill");
+  if (progress && progressFill && document.body.classList.contains("kind-post")) {
+    var paintProgress = function () {
+      var article = document.querySelector("article.post");
+      var total = article ? article.offsetHeight - window.innerHeight : 0;
+      var scrolled = 0;
+      if (article) {
+        scrolled = Math.min(Math.max(-article.getBoundingClientRect().top, 0), Math.max(total, 0));
+      }
+      var pct = total <= 40 ? 100 : Math.round((scrolled / total) * 100);
+      if (pct > 100) pct = 100;
+      progressFill.style.width = pct + "%";
+      progress.setAttribute("aria-valuenow", String(pct));
+    };
+    paintProgress();
+    document.addEventListener("scroll", paintProgress, { passive: true });
+    window.addEventListener("resize", paintProgress);
+  }
+
+  /* R 随机一篇，T 切换主题。输入框里打字时不拦截。/ 仍用来聚焦搜索。 */
+  document.addEventListener("keydown", function (event) {
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    var tag = (event.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea" || tag === "select" || event.target.isContentEditable) return;
+    if (event.key === "r" || event.key === "R") {
+      event.preventDefault();
+      goRandom();
+    }
+    if ((event.key === "t" || event.key === "T") && themeButton) {
+      event.preventDefault();
+      themeButton.click();
+    }
+  });
+
+  /* 评论框。主题跟站点走，不跟系统单独走。 */
+  var giscusHost = document.getElementById("giscus");
+  if (giscusHost && giscusHost.getAttribute("data-repo")) {
+    var giscusScript = document.createElement("script");
+    giscusScript.src = "https://giscus.app/client.js";
+    giscusScript.async = true;
+    giscusScript.crossOrigin = "anonymous";
+    giscusScript.setAttribute("data-repo", giscusHost.getAttribute("data-repo"));
+    giscusScript.setAttribute("data-repo-id", giscusHost.getAttribute("data-repo-id"));
+    giscusScript.setAttribute("data-category", giscusHost.getAttribute("data-category"));
+    giscusScript.setAttribute("data-category-id", giscusHost.getAttribute("data-category-id"));
+    giscusScript.setAttribute("data-mapping", giscusHost.getAttribute("data-mapping") || "pathname");
+    giscusScript.setAttribute("data-strict", giscusHost.getAttribute("data-strict") || "0");
+    giscusScript.setAttribute("data-reactions-enabled", giscusHost.getAttribute("data-reactions") || "1");
+    giscusScript.setAttribute("data-emit-metadata", giscusHost.getAttribute("data-emit") || "0");
+    giscusScript.setAttribute("data-input-position", giscusHost.getAttribute("data-input-position") || "bottom");
+    giscusScript.setAttribute("data-lang", giscusHost.getAttribute("data-lang") || "zh-CN");
+    giscusScript.setAttribute("data-theme", giscusThemeName());
+    giscusHost.appendChild(giscusScript);
   }
 })();
