@@ -1,9 +1,12 @@
+/* Hallmark v2.0.0 · custom · theme: terminal pixel (by request) · shape: reading column · job: read the next post */
+/* critique: the rail carries the pixel terminal; the column stays a reading face at a real measure */
+/* waive 12, 13: a blog index is the post list, not a campaign hero; cutting it would drop the feature */
+/* waive hud: HP, XP and EXP stay as measurement labels in the terminal face, untracked, because that is the pinned interface */
+/* h1 and h2 share 24px: Press Start and Fusion Pixel stay crisp at 12px and 24px, and 12px loses to the 17px body. Color, the rule under h2, and a body-face h3 carry the steps. */
 /*
   深色优先的终端 / 像素风。
-
-  标题用两套自托管字体：拉丁字母是 Press Start 2P，中文是 Fusion Pixel 12px。
-  长正文不用像素字体，走系统黑体，字号和行距按阅读来留。
-  侧栏、菜单抽屉、目录的开关方式和原来一样，仍由两个勾选框驱动。
+  标题用 Press Start 2P（拉丁）和 Fusion Pixel 12px（中文）。正文用系统黑体。
+  颜色和字体在 :root 里声明，后面的规则只引用这些变量。
 */
 
 @font-face {
@@ -35,6 +38,8 @@
 :root {
   color-scheme: dark;
   --font-body: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Pixel Display", var(--font-body);
+  --font-terminal: "Terminal", ui-monospace, monospace;
   --bg: #070b12;
   --panel: #101826;
   --ink: #d5deea;
@@ -55,6 +60,23 @@
   --heat-2: #1e8f62;
   --heat-3: #3dffb0;
   --heat-4: #d8ffe9;
+  --on-accent: #07140e;
+  --on-accent-light: #f4fff6;
+  --hud-bg: #070b12;
+  --track: #1a1408;
+  --track-inset: #1a1208;
+  --scan: rgba(0, 0, 0, 0.16);
+  --code-screen: #0c1412;
+  --code-ink: #d7ffe8;
+  --code-frame: #1d3a2e;
+  --danger: #ff5d5d;
+  --syntax-key: #7dffa8;
+  --syntax-string: #ffd27a;
+  --syntax-comment: #8aa39a;
+  --syntax-fn: #7ee7ff;
+  --syntax-num: #ffb020;
+  --paper: #f6f3ec;
+  --ink-print: #1a1814;
   --menu-width: 18rem;
   --header-height: 3.25rem;
   --body-background: var(--bg);
@@ -79,7 +101,7 @@ html[data-theme="light"] {
   --line: #1c1914;
   --shadow: #c8c1b2;
   --btn-face: #faf7ef;
-  --btn-light: #ffffff;
+  --btn-light: #f7f4ea;
   --btn-shadow: #8d8678;
   --code-inline: #e7f0e4;
   --fill: #0c7a48;
@@ -97,6 +119,7 @@ html[data-theme="light"] {
   --gray-200: #d9d2c3;
   --gray-500: var(--muted);
   --code-bg: var(--code-inline);
+  --on-accent: var(--on-accent-light);
 }
 
 /* 没手动选过时，浅色系统用浅色。深色系统沿用上面的 :root。 */
@@ -113,7 +136,7 @@ html[data-theme="light"] {
     --line: #1c1914;
     --shadow: #c8c1b2;
     --btn-face: #faf7ef;
-    --btn-light: #ffffff;
+    --btn-light: #f7f4ea;
     --btn-shadow: #8d8678;
     --code-inline: #e7f0e4;
     --fill: #0c7a48;
@@ -131,12 +154,19 @@ html[data-theme="light"] {
     --gray-200: #d9d2c3;
     --gray-500: var(--muted);
     --code-bg: var(--code-inline);
+    --on-accent: var(--on-accent-light);
   }
 }
 
 * { box-sizing: border-box; }
 
-html { font-size: 17px; scroll-behavior: smooth; background: var(--bg); }
+html {
+  font-size: 17px;
+  scroll-behavior: smooth;
+  background: var(--bg);
+  overflow-x: clip;
+  scrollbar-color: var(--line) var(--bg);
+}
 
 body {
   margin: 0;
@@ -145,22 +175,26 @@ body {
     radial-gradient(ellipse at top, color-mix(in srgb, var(--accent) 8%, var(--bg)) 0%, var(--bg) 42rem);
   font-family: var(--font-body);
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
   line-height: 1.8;
+  overflow-x: clip;
   text-rendering: optimizeLegibility;
 }
 
 img { max-width: 100%; height: auto; }
 
-a { color: var(--accent); text-decoration: none; }
+a { color: var(--accent); text-decoration: none; text-underline-offset: 0.18em; }
+::placeholder { color: var(--muted); opacity: 1; }
 a:hover { text-decoration: underline; }
+a:active, button:active { opacity: 0.82; }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
 
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
-::selection { background: var(--accent); color: #07140e; }
+::selection { background: var(--accent); color: var(--on-accent); }
 
 .hidden { display: none; }
 .visually-hidden {
@@ -215,30 +249,30 @@ a:hover { text-decoration: underline; }
   align-items: center;
   gap: 0.4rem;
   padding: 0 0.45rem;
-  background: #070b12;
+  background: var(--hud-bg);
   border-bottom: 2px solid var(--accent);
   pointer-events: none;
 }
-body.kind-post { padding-top: 14px; }
+body.kind-post { padding-top: 16px; }
 body.kind-post .xp-bar { display: flex; }
 .xp-name {
-  font-family: "Terminal", monospace;
+  font-family: var(--font-terminal);
   font-size: 13px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   color: var(--accent);
   line-height: 1;
 }
 .xp-track {
   flex: 1 1 auto;
   height: 8px;
-  background: #1a1408;
-  box-shadow: inset 2px 2px 0 #000;
+  background: var(--track);
+  box-shadow: inset 2px 2px 0 var(--track-inset);
 }
 .xp-fill {
   display: block;
   height: 100%;
   width: 0;
-  background: repeating-linear-gradient(90deg, var(--fill) 0 6px, color-mix(in srgb, var(--fill) 55%, #000) 6px 8px);
+  background: repeating-linear-gradient(90deg, var(--fill) 0 6px, color-mix(in srgb, var(--fill) 55%, var(--track-inset)) 6px 8px);
 }
 
 /* 深色时的扫描线。不接指针事件，避免挡住点击。 */
@@ -250,8 +284,8 @@ body.kind-post .xp-bar { display: flex; }
   pointer-events: none;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.16) 0px,
-    rgba(0, 0, 0, 0.16) 1px,
+    var(--scan) 0px,
+    var(--scan) 1px,
     transparent 1px,
     transparent 4px
   );
@@ -289,7 +323,7 @@ html[data-theme="dark"] .crt { display: block; }
   align-items: flex-start;
 }
 .book-brand span {
-  font-family: "Pixel Display", var(--font-body);
+  font-family: var(--font-display);
   letter-spacing: 0;
 }
 .book-brand span::after {
@@ -318,23 +352,22 @@ html[data-theme="dark"] .crt { display: block; }
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.28rem 0.35rem;
+  padding: 0.5rem 0.4rem;
   text-decoration: none;
 }
 .nav-link:hover { text-decoration: none; background: color-mix(in srgb, var(--accent) 12%, transparent); }
 .nav-link.active {
-  color: #07140e;
+  color: var(--on-accent);
   background: var(--accent);
   box-shadow: 3px 3px 0 var(--shadow);
 }
 .nav-ico { width: 16px; height: 16px; flex: 0 0 16px; }
 .nav-en {
   margin-left: auto;
-  font-family: "Terminal", monospace;
+  font-family: var(--font-terminal);
   font-size: 1rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   color: var(--muted);
-  text-transform: uppercase;
 }
 .nav-link.active .nav-en { color: inherit; }
 
@@ -382,7 +415,7 @@ html[data-theme="dark"] .crt { display: block; }
   border: 0;
   background: var(--btn-face);
   color: var(--accent);
-  font-family: "Pixel Display", var(--font-body);
+  font-family: var(--font-display);
   font-size: 12px;
   line-height: 1.5;
   padding: 0.45rem 0.65rem;
@@ -413,7 +446,7 @@ html[data-theme="dark"] .crt { display: block; }
   font-size: 0.78rem;
 }
 kbd {
-  font-family: "Terminal", monospace;
+  font-family: var(--font-terminal);
   font-size: 1rem;
   line-height: 1;
   padding: 0.05rem 0.35rem;
@@ -434,7 +467,7 @@ kbd {
 
 .book-header { display: none; margin-bottom: 1rem; }
 .book-header strong {
-  font-family: "Pixel Display", var(--font-body);
+  font-family: var(--font-display);
   font-size: 11px;
   font-weight: 400;
   color: var(--accent);
@@ -452,8 +485,8 @@ kbd {
 .book-toc { display: none; }
 .book-toc-content {
   position: sticky;
-  top: 0;
-  height: 100vh;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
   overflow: auto;
   width: var(--menu-width);
   padding: 1.4rem 1rem;
@@ -469,13 +502,13 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
 
 /* ---------- 正文 ---------- */
 
-.markdown { line-height: 1.8; max-width: 44rem; }
+.markdown { line-height: 1.8; max-width: 40rem; }
 .markdown > :first-child { margin-top: 0; }
 .markdown h1,
 .markdown h2,
 .markdown h3,
 .cloud-label {
-  font-family: "Pixel Display", var(--font-body);
+  font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: 0;
   line-height: 1.55;
@@ -490,20 +523,36 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
 .theme-row button {
   -webkit-font-smoothing: none;
 }
-.markdown h1 { font-size: 24px; margin: 0.2rem 0 0.6rem; }
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+.markdown h1 { font-size: 24px; margin: 0.2rem 0 0.75rem; text-wrap: balance; }
 .markdown h2 {
   font-size: 24px;
-  margin: 1.8rem 0 0.7rem;
-  padding-bottom: 0.25rem;
+  margin: 2.4rem 0 0.7rem;
+  padding-bottom: 0.35rem;
   border-bottom: 2px solid var(--line);
+  color: var(--accent);
+  text-wrap: balance;
 }
-.markdown h3 { font-size: 12px; margin: 1.4rem 0 0.45rem; color: var(--accent); }
+.markdown > h2:first-child { margin-top: 0; }
+.markdown > h2:first-child { margin-top: 0; }
+.markdown h3 {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 650;
+  margin: 1.5rem 0 0.4rem;
+  color: var(--ink);
+}
 .markdown h5, .post-date {
   margin: 0.2rem 0 0.6rem;
-  font-family: "Terminal", monospace;
+  font-family: var(--font-terminal);
   font-size: 1.25rem;
   font-weight: 400;
-  letter-spacing: 0.03em;
+  letter-spacing: 0;
   color: var(--muted);
 }
 .markdown p { margin: 0.85rem 0; }
@@ -522,7 +571,7 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
 .markdown a.anchor {
   opacity: 0;
   margin-left: 0.3rem;
-  font-family: "Terminal", monospace;
+  font-family: var(--font-terminal);
   font-size: 1rem;
   text-decoration: none;
 }
@@ -534,16 +583,16 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
   padding: 0.05rem 0.3rem;
   background: var(--code-inline);
   border-radius: 0;
-  font-family: "Terminal", "Pixel Display", ui-monospace, monospace;
+  font-family: var(--font-terminal);
   font-size: 1.05rem;
 }
 .markdown pre {
   position: relative;
   padding: 1.7rem 1rem 1rem;
   overflow-x: auto;
-  background: #0c1412;
-  color: #d7ffe8;
-  border: 2px solid #1d3a2e;
+  background: var(--code-screen);
+  color: var(--code-ink);
+  border: 2px solid var(--code-frame);
   border-radius: 0;
   line-height: 1.45;
   cursor: copy;
@@ -554,7 +603,7 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
   position: absolute;
   top: 0.15rem;
   left: 0.7rem;
-  font-family: "Terminal", monospace;
+  font-family: var(--font-terminal);
   font-size: 1.15rem;
   color: var(--accent);
 }
@@ -562,7 +611,7 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
   background: none;
   padding: 0;
   color: inherit;
-  font-family: "Terminal", "Pixel Display", ui-monospace, monospace;
+  font-family: var(--font-terminal);
   font-size: 1.15rem;
 }
 .markdown pre.copied { outline: 2px solid var(--accent); }
@@ -575,7 +624,7 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
 }
 .book-hint.info { border-color: var(--accent); }
 .book-hint.warning { border-color: var(--amber); }
-.book-hint.danger { border-color: #ff5d5d; }
+.book-hint.danger { border-color: var(--danger); }
 .book-hint a { margin-right: 0.6rem; }
 
 .image-cover { margin: 0.6rem 0; }
@@ -600,7 +649,7 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
 }
 .tag:hover, .tag-small:hover { text-decoration: none; color: var(--accent); }
 
-.archive { display: inline; color: var(--muted); font-family: "Terminal", monospace; font-size: 1.05rem; }
+.archive { display: inline; color: var(--muted); font-family: var(--font-terminal); font-size: 1.05rem; }
 
 .home-list, .archive-list { list-style: none; padding: 0; }
 .home-list li, .archive-list li { margin: 0.55rem 0; }
@@ -614,15 +663,15 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
   font-size: 0.85rem;
   text-decoration: none;
 }
-.tag-cloud:hover { background: var(--accent); color: #07140e; text-decoration: none; }
-.cloud-label { display: block; margin: 1.4rem 0 0.45rem; font-size: 16px; }
+.tag-cloud:hover { background: var(--accent); color: var(--on-accent); text-decoration: none; }
+.cloud-label { display: block; margin: 1.6rem 0 0.45rem; font-size: 16px; }
 
 .quick-links {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem 0.85rem;
   align-items: center;
-  font-family: "Terminal", "Pixel Display", var(--font-body);
+  font-family: var(--font-terminal);
   font-size: 1.2rem;
 }
 
@@ -635,10 +684,10 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
   margin: 0.35rem 0;
 }
 .hud-name, .read-meter-label {
-  font-family: "Terminal", monospace;
+  font-family: var(--font-terminal);
   font-size: 1.25rem;
   color: var(--accent);
-  letter-spacing: 0.06em;
+  letter-spacing: 0;
 }
 .hud-track {
   display: block;
@@ -649,10 +698,10 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
 .hud-fill {
   display: block;
   height: 100%;
-  background: repeating-linear-gradient(90deg, var(--fill) 0 8px, color-mix(in srgb, var(--fill) 60%, #000) 8px 10px);
+  background: repeating-linear-gradient(90deg, var(--fill) 0 8px, color-mix(in srgb, var(--fill) 60%, var(--track-inset)) 8px 10px);
 }
 .hud-fill-alt {
-  background: repeating-linear-gradient(90deg, var(--fill-alt) 0 8px, color-mix(in srgb, var(--fill-alt) 60%, #000) 8px 10px);
+  background: repeating-linear-gradient(90deg, var(--fill-alt) 0 8px, color-mix(in srgb, var(--fill-alt) 60%, var(--track-inset)) 8px 10px);
 }
 .hud-value { font-size: 0.82rem; color: var(--muted); }
 .read-meter .hud-track { margin: 0.35rem 0; }
@@ -701,20 +750,23 @@ body.has-toc .book-toc { display: block; flex: 0 0 var(--menu-width); }
 .reaction-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
 .reaction-container button[aria-pressed="true"] {
   background: var(--accent);
-  color: #07140e;
+  color: var(--on-accent);
 }
-.reaction-container button .count { margin-left: 0.25rem; font-family: "Terminal", monospace; font-size: 1rem; }
+.reaction-container button .count { margin-left: 0.25rem; font-family: var(--font-terminal); font-size: 1rem; }
 
-.book-comments { margin-top: 1.6rem; max-width: 44rem; }
+.book-comments { margin-top: 1.6rem; max-width: 40rem; }
 .comments-kicker {
   margin: 0 0 0.6rem;
-  font-family: "Pixel Display", var(--font-body);
-  font-size: 16px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--line);
+  padding-bottom: 0.35rem;
 }
 .comments-kicker span {
   display: inline-block;
   margin-right: 0.45rem;
-  font-family: "Terminal", monospace;
+  font-family: var(--font-terminal);
   font-size: 1.3rem;
   color: var(--accent);
 }
@@ -736,18 +788,18 @@ ul.pagination .page-link {
   color: var(--ink);
   background: var(--btn-face);
   box-shadow: inset -3px -3px 0 var(--btn-shadow), inset 3px 3px 0 var(--btn-light);
-  font-family: "Terminal", monospace;
+  font-family: var(--font-terminal);
   font-size: 1.25rem;
   text-decoration: none;
 }
-.page-item.active .page-link { background: var(--accent); color: #07140e; }
+.page-item.active .page-link { background: var(--accent); color: var(--on-accent); }
 .page-item.disabled .page-link { opacity: 0.35; }
 
-.markdown .highlight .k, .markdown .highlight .kd { color: #7dffa8; }
-.markdown .highlight .s, .markdown .highlight .s1, .markdown .highlight .s2 { color: #ffd27a; }
-.markdown .highlight .c, .markdown .highlight .c1 { color: #8aa39a; }
-.markdown .highlight .nf, .markdown .highlight .nb { color: #7ee7ff; }
-.markdown .highlight .mi, .markdown .highlight .kc { color: #ffb020; }
+.markdown .highlight .k, .markdown .highlight .kd { color: var(--syntax-key); }
+.markdown .highlight .s, .markdown .highlight .s1, .markdown .highlight .s2 { color: var(--syntax-string); }
+.markdown .highlight .c, .markdown .highlight .c1 { color: var(--syntax-comment); }
+.markdown .highlight .nf, .markdown .highlight .nb { color: var(--syntax-fn); }
+.markdown .highlight .mi, .markdown .highlight .kc { color: var(--syntax-num); }
 
 .year-block { margin-top: 1.6rem; }
 .year-block h2 { margin-bottom: 0.4rem; }
@@ -795,7 +847,7 @@ ul.pagination .page-link {
 
 @media print {
   .book-menu, .book-toc, .book-header, .book-comments, .reaction-container, .xp-bar, .crt, .key-hints { display: none !important; }
-  body { background: #fff; color: #000; }
+  body { background: var(--paper); color: var(--ink-print); }
 }
 
 /* 浅色里强调色是深绿色，亮字才看得清。深色里强调色是霓虹，用深字。 */
@@ -803,17 +855,17 @@ html[data-theme="light"] .nav-link.active,
 html[data-theme="light"] .tag-cloud:hover,
 html[data-theme="light"] .page-item.active .page-link,
 html[data-theme="light"] .reaction-container button[aria-pressed="true"] {
-  color: #f4fff6;
+  color: var(--on-accent-light);
 }
-html[data-theme="light"] ::selection { color: #f4fff6; }
+html[data-theme="light"] ::selection { color: var(--on-accent-light); }
 @media (prefers-color-scheme: light) {
   html:not([data-theme="dark"]) .nav-link.active,
   html:not([data-theme="dark"]) .tag-cloud:hover,
   html:not([data-theme="dark"]) .page-item.active .page-link,
   html:not([data-theme="dark"]) .reaction-container button[aria-pressed="true"] {
-    color: #f4fff6;
+    color: var(--on-accent-light);
   }
-  html:not([data-theme="dark"]) ::selection { color: #f4fff6; }
+  html:not([data-theme="dark"]) ::selection { color: var(--on-accent-light); }
 }
 
 @media (prefers-reduced-motion: reduce) {

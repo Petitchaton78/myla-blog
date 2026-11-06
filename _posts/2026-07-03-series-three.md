@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 占位系列 · 其三（示例）
+title: 占位系列其三（示例）
 date: 2026-07-03 09:00:00 +0800
 categories: [折腾]
 tags: [示例, 笔记]
