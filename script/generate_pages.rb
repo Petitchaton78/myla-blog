@@ -46,6 +46,8 @@ def read_posts
     body = raw.split(/^---\s*$/, 3)[1]
     data = YAML.safe_load(body, permitted_classes: [Date, Time], aliases: true) || {}
     next if data["published"] == false
+    draft = data["draft"]
+    next if draft == true || draft.to_s == "true"
 
     date = data["date"]
     date = Date.parse(date.to_s) if date && !date.is_a?(Date)

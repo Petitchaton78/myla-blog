@@ -1,7 +1,8 @@
 # 站点级设置。改站名、简介、评论、分页时先看这里。
 # 改完如果动过标签、分类，或文章多到新的一页，先跑：
+#   ruby script/publish_obsidian.rb
 #   ruby script/generate_pages.rb
-# GitHub Actions 会在发布前自动跑这一步。
+# GitHub Actions 会在发布前自动跑这两步。
 
 title: Myla's Blog
 tagline: 玩家日志
@@ -66,6 +67,9 @@ exclude:
   - .gitignore
   - script
   - .github
+  - cms-oauth
+  - docs
+  - obsidian
 
 defaults:
   - scope:

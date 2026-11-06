@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>内容管理</title>
+  </head>
+  <body>
+    <!-- 先拦住自动初始化，才能在 init 之前挂上预览样式。 -->
+    <script>window.CMS_MANUAL_INIT = true;</script>
+    <script src="https://unpkg.com/decap-cms@3.6.2/dist/decap-cms.js"></script>
+    <script>
+      CMS.registerPreviewStyle("/assets/css/style.css");
+
+      function previewImage(props, image) {
+        if (!image) return null;
+        var src = image;
+        try {
+          var asset = props.getAsset(image);
+          if (asset && asset.toString) src = asset.toString();
+        } catch (error) {}
+        return h("p", { className: "image-cover" }, h("img", { src: src, alt: "" }));
+      }
+
+      var EntryPreview = createClass({
+        render: function () {
+          var entry = this.props.entry;
+          var title = entry.getIn(["data", "title"]) || "未命名";
+          var image = entry.getIn(["data", "image"]);
+          return h("div", { className: "book-page" },
+            h("article", { className: "markdown" },
+              h("h1", null, title),
+              previewImage(this.props, image),
+              this.props.widgetFor("body")
+            )
+          );
+        }
+      });
+
+      CMS.registerPreviewTemplate("posts", EntryPreview);
+      CMS.registerPreviewTemplate("pages", EntryPreview);
+      CMS.init();
+    </script>
+  </body>
+</html>

@@ -3,3 +3,5 @@ _site/
 .sass-cache/
 .bundle/
 vendor/
+# script/publish_obsidian.rb 从 obsidian/ 写出来的文章
+_posts/*.obsidian.md
