@@ -8,5 +8,5 @@
     {% endfor %}
     <a class="tag tag-small" href="{{ href | relative_url }}">{{ tag }}</a>
   {% endfor %}
-  <div class="archive">- {{ post.date | date: "%Y-%m-%d" }}</div>
+  <div class="archive">{{ post.date | date: "%Y-%m-%d" }}</div>
 </li>

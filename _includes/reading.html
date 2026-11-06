@@ -10,12 +10,8 @@
 {% assign tenths = chars | times: 10 | divided_by: 1000 %}
 {% assign whole = tenths | divided_by: 10 %}
 {% assign frac = tenths | modulo: 10 %}
-{% assign pct = minutes | times: 100 | divided_by: 12 %}
-{% if pct > 100 %}{% assign pct = 100 %}{% endif %}
 <blockquote class="book-hint info read-meter">
-  <span class="read-meter-label">EXP {{ minutes }} MIN</span>
-  <span class="hud-track" aria-hidden="true"><span class="hud-fill" style="width: {{ pct }}%"></span></span>
-  本文总计
-  {% if chars >= 1000 %}{{ whole }}.{{ frac }}k{% else %}{{ chars }}{% endif %}
-  字，阅读约需要 {{ minutes }} 分钟
+  本文
+  {% if chars >= 1000 %}{{ whole }}.{{ frac }} 千{% else %}{{ chars }}{% endif %}
+  字，阅读大约 {{ minutes }} 分钟。
 </blockquote>
