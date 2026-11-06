@@ -5,13 +5,13 @@
 <hr>
 <div class="post-nav">
   {% if page.previous %}
-    <a href="{{ page.previous.url | relative_url }}">&lt;&lt; 前 | {{ page.previous.title }}</a>
+    <a href="{{ page.previous.url | relative_url }}">上一篇：{{ page.previous.title }}</a>
   {% else %}
     <span></span>
   {% endif %}
-  <button type="button" class="random" id="random-post-inline">随机传送</button>
+  <button type="button" class="random" id="random-post-inline">随机一篇</button>
   {% if page.next %}
-    <a href="{{ page.next.url | relative_url }}">{{ page.next.title }} | 后 &gt;&gt;</a>
+    <a href="{{ page.next.url | relative_url }}">下一篇：{{ page.next.title }}</a>
   {% else %}
     <span></span>
   {% endif %}

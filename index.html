@@ -2,7 +2,7 @@
 layout: default
 ---
 <article class="markdown">
-  <h2 id="start">主菜单</h2>
+  <h2 id="start">快捷入口</h2>
   <p class="quick-links">
     <a href="{{ '/now/' | relative_url }}">近况</a>
     <a href="{{ '/about/' | relative_url }}">关于</a>
@@ -10,10 +10,10 @@ layout: default
     <button type="button" class="random" id="random-home">随机一篇</button>
   </p>
 
-  <h2 id="support">补给站</h2>
+  <h2 id="support">支持</h2>
   {% include support.html %}
 
-  <h2 id="stats">状态栏</h2>
+  <h2 id="stats">近一年</h2>
   <div id="heatmap"></div>
   {% assign total_chars = 0 %}
   {% for post in site.posts %}
@@ -22,10 +22,8 @@ layout: default
   {% endfor %}
   {% assign hp = site.posts.size | times: 100 | divided_by: 20 %}
   {% if hp > 100 %}{% assign hp = 100 %}{% endif %}
-  {% if hp < 8 %}{% assign hp = 8 %}{% endif %}
   {% assign xp = total_chars | times: 100 | divided_by: 4000 %}
   {% if xp > 100 %}{% assign xp = 100 %}{% endif %}
-  {% if xp < 8 %}{% assign xp = 8 %}{% endif %}
   <div class="hud" aria-label="写作统计">
     <div class="hud-row">
       <span class="hud-name">HP</span>
@@ -43,7 +41,8 @@ layout: default
   </p>
   <script type="application/json" id="heatmap-data">[{% for post in site.posts %}"{{ post.date | date: '%Y-%m-%d' }}"{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
 
-  <h2 id="recent">最近记录 ｜ <a href="{{ '/posts/' | relative_url }}">阅读全部</a></h2>
+  <h2 id="recent">最近的文章</h2>
+  <p><a href="{{ '/posts/' | relative_url }}">全部文章</a></p>
   <blockquote class="book-hint warning rss-hint">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <circle cx="6.5" cy="17.5" r="2.2" fill="currentColor"></circle>
@@ -51,8 +50,8 @@ layout: default
       <path d="M4 5.5a14 14 0 0 1 14 14" fill="none" stroke="currentColor" stroke-width="2.2"></path>
     </svg>
     <span>
-      想跟到新文章的话，用 <a href="{{ '/index.xml' | relative_url }}">RSS</a> 订一份。
-      <a href="{{ '/2026/06/01/what-is-rss/' | relative_url }}">什么是 RSS，以及怎么订</a>
+      要用阅读器收新文章，订阅 <a href="{{ '/index.xml' | relative_url }}">RSS</a>。
+      <a href="{{ '/2026/06/01/what-is-rss/' | relative_url }}">RSS 是什么，怎么订</a>
     </span>
   </blockquote>
   <ul class="home-list">
@@ -61,12 +60,12 @@ layout: default
     {% endfor %}
   </ul>
 
-  <span class="cloud-label">Categories</span>
+  <span class="cloud-label">分类</span>
   {% for item in site.data.taxonomy.categories %}
     <a class="tag-cloud" href="{{ item.url | relative_url }}">{{ item.name }} [{{ item.count }}]</a>
   {% endfor %}
 
-  <span class="cloud-label">Tags</span>
+  <span class="cloud-label">标签</span>
   {% for item in site.data.taxonomy.tags %}
     <a class="tag-cloud" href="{{ item.url | relative_url }}">{{ item.name }} [{{ item.count }}]</a>
   {% endfor %}

@@ -4,7 +4,7 @@
   切换主题时再发一条 setConfig，让评论框跟着变。
 {% endcomment %}
 <div class="book-comments">
-  <p class="comments-kicker"><span>COMMENTS</span>留言</p>
+  <h2 class="comments-kicker">留言</h2>
   {% if site.giscus.repo != blank and site.giscus.repo_id != blank and site.giscus.category_id != blank %}
     <div id="giscus" class="giscus"
       data-repo="{{ site.giscus.repo }}"

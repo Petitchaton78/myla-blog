@@ -93,7 +93,7 @@
     if (!found) {
       var empty = document.createElement("div");
       empty.className = "search-empty";
-      empty.textContent = "没有匹配的文章";
+      empty.textContent = "没有匹配的文章。换个词再试。";
       searchResults.appendChild(empty);
     }
   }
@@ -182,11 +182,12 @@
   /* 表情计数只存在这台浏览器里。 */
   document.querySelectorAll("[data-reactions] button").forEach(function (button) {
     var emoji = button.getAttribute("data-emoji");
+    var label = button.getAttribute("data-label") || button.textContent.trim();
     var key = "myla-reaction:" + window.location.pathname + ":" + emoji;
     var count = 0;
     try { count = Number(localStorage.getItem(key) || "0"); } catch (error) {}
     function paint() {
-      button.innerHTML = emoji + (count ? '<span class="count">' + count + "</span>" : "");
+      button.innerHTML = label + (count ? '<span class="count">' + count + "</span>" : "");
       button.setAttribute("aria-pressed", count ? "true" : "false");
     }
     paint();
@@ -238,7 +239,7 @@
         else if (value >= 1) level = 1;
         if (day > today) level = 0;
         cell.setAttribute("data-level", String(level));
-        cell.title = key + " · " + value + " 篇";
+        cell.title = key + "：" + value + " 篇";
         heatmap.appendChild(cell);
       }
     }

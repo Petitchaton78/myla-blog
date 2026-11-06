@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 占位系列 · 其二（示例）
+title: 占位系列其二（示例）
 date: 2026-08-12 09:00:00 +0800
 categories: [折腾]
 tags: [示例]
