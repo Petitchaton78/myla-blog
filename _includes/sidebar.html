@@ -7,7 +7,7 @@
     <nav aria-label="站点">
       <h2 class="book-brand">
         <a class="flex align-center" href="{{ '/' | relative_url }}">
-          <img class="pixel-art" src="{{ '/assets/logo.svg' | relative_url }}" alt="" width="32" height="32">
+          <img class="site-mark" src="{{ '/assets/logo.svg' | relative_url }}" alt="" width="28" height="28">
           <span>{{ site.title }}</span>
         </a>
       </h2>
@@ -37,10 +37,9 @@
         {% endfor %}
       </ul>
 
-      <button type="button" class="random" id="random-post">随机一篇</button>
-
-      <div class="theme-row">
-        <button type="button" id="theme-toggle">深色模式</button>
+      <div class="menu-quiet">
+        <button type="button" class="random quiet" id="random-post">随机一篇</button>
+        <button type="button" class="quiet" id="theme-toggle">深色模式</button>
       </div>
 
       <p class="key-hints">

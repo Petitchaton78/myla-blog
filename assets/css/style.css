@@ -114,11 +114,11 @@ body {
 }
 
 img { max-width: 100%; height: auto; }
-.pixel-art {
-  width: 36px;
-  height: 36px;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+.site-mark {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  display: block;
 }
 
 a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
@@ -265,7 +265,37 @@ button.random:hover,
 #theme-toggle:hover,
 .book-btn:hover { background: var(--panel); }
 .book-btn { display: inline-block; margin: 0 0.4rem 0.45rem 0; }
-.theme-row { margin-top: 0.55rem; }
+.menu-quiet {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  margin-top: 0.35rem;
+}
+.book-menu .quiet,
+.book-menu #theme-toggle {
+  min-height: 1.75rem;
+  min-width: 4.5rem;
+  padding: 0.15rem 0.2rem;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  font-weight: 400;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  text-align: left;
+}
+.book-menu .quiet:hover,
+.book-menu #theme-toggle:hover {
+  color: var(--ink);
+  background: transparent;
+}
+.book-header .mobile-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.book-header .site-mark { width: 22px; height: 22px; flex-basis: 22px; }
 
 .key-hints { margin: 0.9rem 0 0; color: var(--muted); font-size: 0.82rem; }
 .key-hints span { margin-right: 0.55rem; }
