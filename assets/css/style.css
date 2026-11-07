@@ -115,11 +115,10 @@ body {
 
 img { max-width: 100%; height: auto; }
 .site-mark {
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
   display: block;
-  border-radius: 50%;
   image-rendering: pixelated;
 }
 
@@ -297,7 +296,7 @@ button.random:hover,
   align-items: center;
   gap: 0.4rem;
 }
-.book-header .site-mark { width: 32px; height: 32px; flex-basis: 32px; }
+.book-header .site-mark { width: 48px; height: 48px; flex-basis: 48px; }
 
 .key-hints { margin: 0.9rem 0 0; color: var(--muted); font-size: 0.82rem; }
 .key-hints span { margin-right: 0.55rem; }
