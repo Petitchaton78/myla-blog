@@ -115,10 +115,11 @@ body {
 
 img { max-width: 100%; height: auto; }
 .site-mark {
-  width: 28px;
-  height: 28px;
-  flex: 0 0 28px;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
   display: block;
+  border-radius: 50%;
 }
 
 a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
@@ -295,7 +296,7 @@ button.random:hover,
   align-items: center;
   gap: 0.4rem;
 }
-.book-header .site-mark { width: 22px; height: 22px; flex-basis: 22px; }
+.book-header .site-mark { width: 26px; height: 26px; flex-basis: 26px; }
 
 .key-hints { margin: 0.9rem 0 0; color: var(--muted); font-size: 0.82rem; }
 .key-hints span { margin-right: 0.55rem; }
